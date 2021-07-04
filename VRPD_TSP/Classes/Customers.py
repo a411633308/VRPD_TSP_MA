@@ -4,18 +4,16 @@ import uuid
 
 
 class Customers:
-    def __init__(self, param):
+    def __init__(self, pack_needs: int, non_flying: bool):
         """
         Customer
-        :param param: dict, 'lon','lat','pack_needs','non_flying'.
+        :param param: dict,'pack_needs','non_flying'.
         """
 
-        self.index = str(uuid.uuid1())[:10]
-        self.lon: str = param['lon']
-        self.lat: str = param['lat']
-        self.pack_needs: list = param['pack_needs']
+        self.index = "cus_"+str(uuid.uuid1())[:10]
+        self.pack_needs: list = pack_needs
         self.served: bool = False
-        self.in_non_flying: bool = param['non_flying']
+        self.in_non_flying: bool = non_flying
 
     def __index__(self):
         return self.index
@@ -46,12 +44,6 @@ class Customers:
     def get_live_location(self):
         return self.in_non_flying
 
-    def get_location(self):
-        """
-        return the location of the customer
-        :return: the location of customers
-        """
-        return {'lon': self.lon, 'lat': self.lat}
 
 #
 # param = {

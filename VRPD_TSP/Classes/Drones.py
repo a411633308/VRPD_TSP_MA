@@ -11,7 +11,7 @@ class Drones:
         The drone node.
         :param flying_range: maximum flying range of the drone
         """
-        self.index: str = str(uuid.uuid1())[:10]
+        self.index: str = "dro_"+str(uuid.uuid1())[:10]
         # about battery
         self.flying_range: int = flying_range  # think twice which kind of type should be used
         self.battery: Batteries = Batteries(self.flying_range)

@@ -8,7 +8,7 @@ class Packages:
         """
         self.num_pack: int = 0
         self.rec_pack_res_num: int = 0
-        self.index: str = str(uuid.uuid1())[:10]
+        self.index: str = "pac_"+str(uuid.uuid1())[:10]
 
     def __index__(self):
         return self.index

@@ -9,7 +9,7 @@ class Weather:
         """
         self.suit:bool = True
         self.wind_speed:int = 0
-        self.index = str(uuid.uuid1())[:10]
+        self.index = "wea_"+str(uuid.uuid1())[:10]
 
     def set_wea_drone(self, suit):
         """

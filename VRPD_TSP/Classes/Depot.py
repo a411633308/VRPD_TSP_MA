@@ -4,7 +4,7 @@ import uuid
 
 class Depot:
     def __init__(self):
-        self.index = str(uuid.uuid1())[:10]
+        self.index = "dep_"+str(uuid.uuid1())[:10]
 
     def __index__(self):
         return self.index

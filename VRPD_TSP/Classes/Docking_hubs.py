@@ -12,7 +12,7 @@ class Docking_hubs:
         :param num: the number of batteries as backup.
         :param flying_range: the maximum flying range of drone.
         """
-        self.index: str = str(uuid.uuid1())[:10]
+        self.index: str = "doc_"+str(uuid.uuid1())[:10]
         self.batteries: list = list()
         # self.packages: Packages = Packages()
         self.landed_drone_num: int = 0
@@ -83,7 +83,6 @@ class Docking_hubs:
         :param flying_range: the maximum energy of battery.
         """
         [self.batteries.append(Batteries(flying_range)) for i in range(num)]
-        print("Left batteries in this docking hub:", len(self.batteries))
         self.left_batteries_num = len(self.batteries)
         return self.batteries
 

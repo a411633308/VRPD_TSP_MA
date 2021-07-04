@@ -8,7 +8,7 @@ from Classes.Batteries import Batteries
 
 class Minivan:
     def __init__(self, max_range: int, max_pack: int):
-        self.index: str = str(uuid.uuid1())[:10]
+        self.index: str = "van_" + str(uuid.uuid1())[:10]
         self.packages: list = list()
         # packages: receive reservation, reserve; unload to drone;
         #           load from docking_hubs

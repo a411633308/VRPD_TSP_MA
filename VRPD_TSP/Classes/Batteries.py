@@ -8,7 +8,7 @@ class Batteries:
         presents the batteries of drones
         :param flying_range: int, the maximum distance of drone can fly
         """
-        self.index = str(uuid.uuid1())[:10]
+        self.index = "bat_"+str(uuid.uuid1())[:10]
         self.max_ba: int = flying_range
         self.left_ba_sta: int = self.max_ba
     #    self.rec_ba_res_num: int = 0
