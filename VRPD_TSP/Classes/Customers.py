@@ -11,7 +11,7 @@ class Customers:
         """
 
         self.index = "cus_"+str(uuid.uuid1())[:10]
-        self.pack_needs: list = pack_needs
+        self.pack_needs: int = pack_needs
         self.served: bool = False
         self.in_non_flying: bool = non_flying
 
