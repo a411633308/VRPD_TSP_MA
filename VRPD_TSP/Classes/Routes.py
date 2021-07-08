@@ -8,7 +8,7 @@ from Classes.Customers import Customers
 
 import numpy as np
 from random import choice
-# import random
+import random
 # import matplotlib.pyplot as plt
 
 class Routes:
@@ -31,7 +31,7 @@ class Routes:
         self.color_map: list[str] = list()
         self.G = nx.Graph()
 
-    def init_graph(self, dckh_num: int, dep_num: int, cus_num: int):
+    def init_graph_nodes(self, dckh_num: int, dep_num: int, cus_num: int):
         """
         init sequence of nodes for a graph
         :param dckh_num: int,
@@ -61,10 +61,8 @@ class Routes:
         # customers and docking hubs nodes shuffled as a new element
 
         z = [str(self.nodes_graph[i].index) for i in range(len(self.nodes_graph))]
-        self.G = nx.path_graph(z)
-        print(self.G.nodes())
-        # [G.add_edge(choice(z), choice(z)) for i in range(len(z))]
-        [self.G.add_edge(choice(z), choice(z)) for i in range(26)]
+        [self.G.add_node(i, type=i[:3]) for i in z]
+        [self.G.add_edge(i, j) for i in z for j in list(set(z)-{i})]
         return self.G
 
     def set_non_flying(self, non_fly_num: int):
@@ -90,12 +88,15 @@ class Routes:
                 self.color_map.append(colors[2])
 
             for nbr, eattr in nbrs.items():
-                eattr['type'] = n[:3]
-                eattr['weight_dro'] = weights[0][i]
-                eattr['weight_van'] = weights[1][i]
-                print(eattr)
+                eattr['weight_dro'] = round(weights[0][i], 3)
+                eattr['weight_van'] = round(weights[1][i], 3)
+                if eattr['weight_dro'] < eattr['weight_van']:
+                    eattr['veh_type'] = 'drone'
+                else:
+                    eattr['veh_type'] = 'van'
                 i = i+1
         return self.color_map
+    # It's still short of graph with specific font size and format
 
 #
 # bat_num: int = 20
