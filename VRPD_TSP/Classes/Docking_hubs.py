@@ -6,10 +6,10 @@ from Classes.Packages import Packages
 
 
 class Docking_hubs:
-    def __init__(self, num: int, flying_range: int):
+    def __init__(self, num: int = 3, flying_range: int = 60, stock_packages: int = 20):
         """
-        Docking hub nodes.
-        :param num: the number of batteries as backup.
+        Docking hub nodes, which has default packages number 20 packages
+        :param num: the number of batteries can be saved in this docking hub.
         :param flying_range: the maximum flying range of drone.
         """
         self.index: str = "doc_"+str(uuid.uuid1())[:10]
@@ -22,6 +22,7 @@ class Docking_hubs:
         self.rec_pack_num: int = 0
         self.rec_bat_num: int = 0
         self.package_delivered: list = list()
+        self.packages: list = [Packages() for i in range(stock_packages)]
 
     def __eq__(self, other):
         return self.index == other.index
@@ -102,7 +103,6 @@ class Docking_hubs:
         """
         self.landed_drone_num += 1
         self.name_landed_drones.append(drone_nodes)
-        print("+" * 12 + 'Drone ' + drone_nodes + ' lands at the docking hub ' + self.index + "+" * 12)
         return 1
 
     def launch_drone(self, drone_nodes: str):
@@ -127,7 +127,6 @@ class Docking_hubs:
         The drones have landed at the docking hub.
         :return: a description for logging.
         """
-        print("+" * 12 + str(self.landed_drone_num) + " drones have landed in docking hub " + self.index + "+" * 12)
         return self.name_landed_drones
     # <--------------------functions for drones--------------------end
 

@@ -3,10 +3,11 @@
 import uuid
 from Classes.Packages import Packages
 from Classes.Batteries import Batteries
-# from Classes.Docking_hubs import Docking_hubs
+import random
+import math
 
 class Drones:
-    def __init__(self, flying_range: int):
+    def __init__(self, flying_range: int = 100, rate: float = random.uniform(0, 0.0001)):
         """
         The drone node.
         :param flying_range: maximum flying range of the drone
@@ -23,6 +24,7 @@ class Drones:
         self.left_packages: int = len(self.package)
         self.package_delivered: list = list()
         self.pack_res_list: list = list()
+        self.rate_load_bat: float = rate
 
     def __index__(self):
         return self.index
@@ -45,16 +47,18 @@ class Drones:
         """
         [self.package.append(Packages()) for i in range(num)]
         self.left_packages: int = len(self.package)
-        print("+"*12 + " load " + str(num) + " packages to the drone " + self.index + " " + "+"*12)
+        self.battery.left_ba_sta = self.battery.left_ba_sta * math.power((1-self.rate_load_bat), num)
         return 1
 
-    def deliver(self, cu_needs: str, w: int):
-        print("+"*12 + " Left packages before delivery:" + str(self.left_packages) + " " + "+"*12)
+    def load_from_van_dock(self, packages_list: list):
+        self.package = packages_list
+        self.left_packages = len(self.package)
+
+    def deliver(self, cu_needs: str, w: float):
         pack_index = [i for i in range(len(self.package)) if self.package[i].index == cu_needs]
         self.package_delivered.append(cu_needs)
         self.package.pop(pack_index[0])
         self.left_packages: int = len(self.package)
-        print("+"*12 + " Left packages after delivery:" + str(self.left_packages) + " " + "+"*12)
         self. sum_energy_consumption(w)
         return 1
 
@@ -84,16 +88,16 @@ class Drones:
     # <--------------------functions for packages--------------------end
 
     # >--------------------functions for energy--------------------start
-    def battery_changed(self):
+    def battery_changed(self, battery):
         """
         Batteries is being changed, its reservation empties too.
         :return:1
         """
-        self.battery: Batteries = Batteries(self.flying_range)
+        self.battery: Batteries = battery
         self.battery.ba_res_list = list()
         return 1
 
-    def sum_energy_consumption(self, w: int):
+    def sum_energy_consumption(self, w: float):
         """
         Total energy consumptions adds, and battery states decreases.
         :param w:

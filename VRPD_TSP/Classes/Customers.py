@@ -4,7 +4,7 @@ import uuid
 
 
 class Customers:
-    def __init__(self, pack_needs: int, non_flying: bool):
+    def __init__(self, pack_needs: int = 1, non_flying: bool = False):
         """
         Customer
         :param param: dict,'pack_needs','non_flying'.
@@ -12,6 +12,7 @@ class Customers:
 
         self.index = "cus_"+str(uuid.uuid1())[:10]
         self.pack_needs: int = pack_needs
+        self.required_pack_list: list[str] = list()
         self.served: bool = False
         self.in_non_flying: bool = non_flying
 
@@ -23,6 +24,18 @@ class Customers:
 
     def __str__(self):
         return "+"*12 + " Customer " + self.index + " lives in 'non flying range' " + str(self.in_non_flying) + "+"*12
+
+    def require_certain_packages(self, pack_list: list):
+        """
+        initiates the customers' needs from given packages in the network
+        :param pack_list: given packages required for the customer
+        :return: if his needs equals to the his relevant packages indexes, 1; else 0
+        """
+        self.required_pack_list = pack_list
+        if len(self.required_pack_list) == self.pack_needs:
+            return 1
+        else:
+            return 0
 
     def receive_pack(self, node: str):
         """

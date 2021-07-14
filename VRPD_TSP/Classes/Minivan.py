@@ -4,10 +4,18 @@ import uuid
 from Classes.Packages import Packages
 from Classes.Batteries import Batteries
 # from Classes.Docking_hubs import Docking_hubs
-
+import random
+import math
 
 class Minivan:
-    def __init__(self, max_range: int, max_pack: int):
+    def __init__(self, max_range: int = 300, max_pack: int = 20, fly_range: int = 60, num: int = 3):
+        """
+        a minivan which can load several drones, deliver packages, change drone's batteries, etc.
+        :param max_range: the maximum running range of the van
+        :param max_pack: the maximum number of packages can be saved on the van
+        :param fly_range: the maximum flying range of the drone
+        :param num: the numbers of battery can be saved on the van
+        """
         self.index: str = "van_" + str(uuid.uuid1())[:10]
         self.packages: list = list()
         # packages: receive reservation, reserve; unload to drone;
@@ -25,7 +33,10 @@ class Minivan:
         # energy: batteries
         self.rec_bat_res_num: int = 0
         self.batteries: list = list()
+        self.max_bat_num: int = 0
+        self.rate_load_range: float = random.uniform(0, 0.001)
         self.left_bat_num: int = len(self.batteries)
+        self.ini_batteries(flying_range=fly_range, num=num)
 
     def __index__(self):
         return self.index
@@ -52,13 +63,14 @@ class Minivan:
         """
         return self.rec_pack_res_num
 
-    def load_packages(self):
+    def load_packages(self, num: int):
         """
         load a certain numbers of packages to the minivan
         :return: 1
         """
-        [self.packages.append(Packages()) for i in range(self.max_packages_num)]
+        [self.packages.append(Packages()) for i in range(num)]
         self.left_pack: int = len(self.packages)
+        self.left_fuel = self.left_fuel*math.pow((1-self.rate_load_range),self.left_pack)
         return 1
 
     def unload_to_drone(self, node: list):
@@ -75,10 +87,20 @@ class Minivan:
 
         self.rec_pack_res_num = self.rec_pack_res_num - len(pack_index)
         self.left_pack = len(self.packages)
+        self.left_fuel = self.left_fuel * math.power((1-self.left_fuel), len(pack_index))
+        # unloading packages increases the distance the van can still run
         print("+"*12 + " Left packages and packages reservation " + "after unloading " + str(self.left_pack) + " " + str(self.rec_pack_res_num) + " " + "+"*12)
         return 1
 
-    def deliver(self, cus_needs: str, w: int):
+    def deliver(self, w: float):
+        """the van deliver packages through the needs but not the index of packages"""
+        self.del_cus_list.append(self.packages[0])
+        self.packages.pop(0)
+        self.left_fuel = (self.left_fuel - w)*(1+self.rate_load_range)
+        self.left_pack = len(self.packages)
+        return 1
+
+    def deliver(self, cus_needs: str, w: float):
         """
         deliver the packages to the customers
         :param cus_needs: the customer needs, namely the index of required package
@@ -88,7 +110,8 @@ class Minivan:
         pack_index = [i for i in range(len(self.packages)) if self.packages[i].index == cus_needs]
         print(pack_index)
         self.packages.pop(pack_index[0])
-        self.left_fuel -= w
+        self.left_fuel = (self.left_fuel - w)*(1+self.rate_load_range)
+        self.left_pack = len(self.packages)
         self.del_cus_list.append(cus_needs)
         print("+" * 12 + " delivers a package successfully. " + "+" * 12)
         return 1
@@ -125,6 +148,7 @@ class Minivan:
         """
         [self.batteries.append(Batteries(flying_range)) for i in range(num)]
         self.left_bat_num = len(self.batteries)
+        self.max_packages_num = len(self.batteries)
         return 1
 
     def get_batteries(self):
@@ -135,9 +159,10 @@ class Minivan:
         changes the first battery to the drone
         :return: 1
         """
+        batter = self.batteries[0]
         self.batteries.pop(0)
         self.left_bat_num -= 1
-        return 1
+        return batter
     # <--------------------functions for batteries--------------------end
 
 
