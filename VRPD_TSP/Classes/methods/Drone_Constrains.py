@@ -6,11 +6,13 @@ from Classes.Batteries import Batteries
 from Classes.Packages import Packages
 from Classes.methods.Constrains import Constrains
 import random
+import math
+from Classes.PARAMs import rate_load_pack_drone, rate_load_range_drone
 
 class Drone_Batteries(Constrains):
     def __init__(self, drone: Drones):
         self.battery: Batteries = drone.battery
-        self.max: float = self.battery.flying_range
+        self.max: float = self.battery.max_ba
         self.left: float = self.battery.left_ba_sta
         self.weight: float = 0.0  # the used energy of battery of the drone
         self.reserve: list[str] = list()
@@ -64,6 +66,20 @@ class Drone_Packages(Constrains):
         else:
             return 0
 
+    def deliver(self, w: float):
+        """
+        deliver packages in the order of packages in the warehouses
+        :param w: the costs of the drone to deliver this package
+        :return: successfully, 1; unsuccessfully, 0.
+        """
+        if self.left >= 1:
+            self.weight.append(self.packages[0])
+            self.packages.pop(0)
+            self.left = len(self.packages)
+            return 1
+        else:
+            return 0
+
     def reserve_package(self, node: str):
         if self.left <= 1:
             self.reserve_list.append(node)
@@ -79,9 +95,16 @@ class Drone_Packages(Constrains):
 
 class Drone_Constrains:
     def __init__(self, drone: Drones):
+        """
+        The constrain class to manage the activations of drones
+        :param drone: the object of drones in the Vehicles class.
+        """
         self.drones: Drones = drone
+        self.drone_index: str = self.drones.index
         self.drone_packages: Drone_Packages = Drone_Packages(self.drones)
         self.drone_batteries: Drone_Batteries = Drone_Batteries(self.drones)
+        self.rate_load_pack_drone: float = rate_load_pack_drone
+        self.rate_load_range_drone: float = rate_load_range_drone
 
     def deliver_package(self, cust_needs: str, w: float):
         """
@@ -92,6 +115,21 @@ class Drone_Constrains:
         flag_1 = self.drone_batteries.use(w)
         flag_2 = self.drone_packages.deliver(cust_needs)
         if flag_1 == 1 and flag_2 == 1:
+            return 1
+        else:
+            return 0
+
+    def deliver_package(self, w: float):
+        """
+        the drone deliver packages through the order of the packages in the warehouses
+        :param w: the costs of the drone to deliver a package
+        :return: successfully, 1; unsuccessfully, 0.
+        """
+        flag_1 = self.drone_batteries.use(w=w)
+        flag_2 = self.drone_packages.deliver(w=w)
+        # warning! there might be flag_1 is 1 but flag_2 is 0, packages has no change, but the
+        #  battery state of the drone is not the same as before.
+        if flag_1 == flag_2 == 1:
             return 1
         else:
             return 0
@@ -112,27 +150,38 @@ class Drone_Constrains:
         else:
             return 0
 
-    def load_packages(self, rate=random.uniform(0.1, 0.5)):
-        num = self.drone_batteries * rate
-        self.drone_packages.load_packages(num)
+    def load_packages(self):
+        num = self.drone_batteries.left * self.pack_load_rate
+        self.drone_packages.load_packages(math.floor(num))
         self.drone_batteries.left = self.drones.battery.left_ba_sta
+        print(" ", math.floor(num), " packages are loaded onto the drone. ")
 
-    def change_battery(self, node_has_battery: bool, closet_customer: float, battery_node: Batteries):
+    def change_battery(self, van_left_battery: int, closet_customer: float, battery_node: Batteries):
         """
         when the drone is currently at a docking hub of minivan, can choose change battery or not
+        :param van_left_battery: the left batteries number from van or docking hubs
         :param battery_node: the given battery from a docking hub or a minivan
-        :param node_has_battery: whether the current node contains a full-charged battery or not
         :param closet_customer: the left battery of the drone to the closet customer node
         :return: successfully, 1; unsuccessfully, 0.
         """
-        if node_has_battery > 1 & self.drone_batteries.left <= 2 * closet_customer:
+        if van_left_battery >= 1 and self.drone_batteries.left <= 2 * closet_customer and type(battery_node) != type(0):
             self.drone_batteries.change(battery_node)
+            print("the left battery state after changing battery: ", self.drone_batteries.left)
             return 1
         else:
-            return 0
+            if self.drone_batteries.left >= 2 * closet_customer:
+                print("the left battery state of the drone: ", self.drone_batteries.left)
+                print("There's no need to change the battery of the drone. ")
+                return 0
+            elif battery_node == 0:
+                print("Given battery is invalid. ")
+                return 0
+            elif van_left_battery:
+                print("There's no left battery on the node. ")
+                return 0
 
-    def stop_drone(self, node_has_no_battery: bool, closet_customer: float):
-        if not node_has_no_battery & self.drone_batteries <= closet_customer * 2:
+    def stop_drone(self, left_battery: int, closet_customer: float):
+        if left_battery < 1 and self.drone_batteries.left <= closet_customer * 2:
             return self.drones
         else:
             return 0

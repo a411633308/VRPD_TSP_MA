@@ -6,9 +6,11 @@ from Classes.Batteries import Batteries
 # from Classes.Docking_hubs import Docking_hubs
 import random
 import math
-
+from Classes.PARAMs import flying_range_drone, max_range_van, max_pack_num_van, max_bat_num_van
+from Classes.PARAMs import rate_load_range_van, rate_load_pack_van
 class Minivan:
-    def __init__(self, max_range: int = 300, max_pack: int = 20, fly_range: int = 60, num: int = 3):
+    def __init__(self, max_range: int = max_range_van, max_pack: int = max_pack_num_van,
+                 fly_range: int = flying_range_drone, num: int = max_bat_num_van):
         """
         a minivan which can load several drones, deliver packages, change drone's batteries, etc.
         :param max_range: the maximum running range of the van
@@ -34,9 +36,10 @@ class Minivan:
         self.rec_bat_res_num: int = 0
         self.batteries: list = list()
         self.max_bat_num: int = 0
-        self.rate_load_range: float = random.uniform(0, 0.001)
         self.left_bat_num: int = len(self.batteries)
         self.ini_batteries(flying_range=fly_range, num=num)
+        self.rate_load_range_van: float = rate_load_range_van
+        self.rate_load_pack_van: float = rate_load_pack_van
 
     def __index__(self):
         return self.index
@@ -63,14 +66,15 @@ class Minivan:
         """
         return self.rec_pack_res_num
 
-    def load_packages(self, num: int):
+    def load_packages(self):
         """
         load a certain numbers of packages to the minivan
         :return: 1
         """
+        num = self.left_fuel * self.rate_load_range_van
         [self.packages.append(Packages()) for i in range(num)]
         self.left_pack: int = len(self.packages)
-        self.left_fuel = self.left_fuel*math.pow((1-self.rate_load_range),self.left_pack)
+        self.left_fuel = self.left_fuel*math.pow((1-self.rate_load_pack_van), self.left_pack)
         return 1
 
     def unload_to_drone(self, node: list):

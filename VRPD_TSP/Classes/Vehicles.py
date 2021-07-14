@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from Classes.methods.Constrains import Constrains
-from Classes.Batteries import Batteries
+
 from Classes.Drones import Drones
 from Classes.Minivan import Minivan
 
@@ -9,7 +8,7 @@ class Vehicles:
     def __init__(self):
         self.minivan: Minivan = None
         self.drones: list[Drones] = list()
-        self.vehicle_set: dict = {"Minivan": self.minivan,"Drones": self.drones}
+        self.vehicle_set: dict = {"Minivan": self.minivan, "Drones": self.drones}
 
     def __eq__(self, other):
         return self.minivan == other.minivan & self.drones[0] == other.drones[0] & self.drones[1] == other.drones[1]

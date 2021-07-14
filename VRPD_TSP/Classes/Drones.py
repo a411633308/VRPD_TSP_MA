@@ -5,9 +5,10 @@ from Classes.Packages import Packages
 from Classes.Batteries import Batteries
 import random
 import math
+from Classes.PARAMs import rate_load_range_drone, rate_load_pack_drone
 
 class Drones:
-    def __init__(self, flying_range: int = 100, rate: float = random.uniform(0, 0.0001)):
+    def __init__(self, flying_range: int = 65):
         """
         The drone node.
         :param flying_range: maximum flying range of the drone
@@ -24,7 +25,8 @@ class Drones:
         self.left_packages: int = len(self.package)
         self.package_delivered: list = list()
         self.pack_res_list: list = list()
-        self.rate_load_bat: float = rate
+        self.rate_load_range_drone: float = rate_load_range_drone
+        self.rate_load_pack_drone: float = rate_load_pack_drone
 
     def __index__(self):
         return self.index
@@ -39,26 +41,34 @@ class Drones:
             str(self.package_delivered)
 
     # >--------------------functions for packages--------------------start
-    def load_packages(self, num: int):
+    def load_packages(self, num: int, right_locate: bool):
         """
         This drone loads packages from a minivan/docking hub
-        :param num: packages loaded once
+        :param right_locate: whether the drones is at a docking hub or minivan
+        :param num: the number of packages that can be loaded.
         :return: 1
         """
-        [self.package.append(Packages()) for i in range(num)]
-        self.left_packages: int = len(self.package)
-        self.battery.left_ba_sta = self.battery.left_ba_sta * math.power((1-self.rate_load_bat), num)
-        return 1
+        if right_locate:
+            [self.package.append(Packages()) for i in range(num)]
+            self.left_packages: int = len(self.package)
+            self.battery.left_ba_sta = self.battery.left_ba_sta * math.pow((1-self.rate_load_pack_drone), num)
+            return 1
+        else:
+            return 0
 
-    def load_from_van_dock(self, packages_list: list):
-        self.package = packages_list
+    def load_from_van_dock(self):
+        num = self.battery.left_ba_sta * self.rate_load_range_drone
+        # self.package = packages_list
+        self.package: list[Packages] = [Packages() for i in range(num)]
         self.left_packages = len(self.package)
+        self.battery.left_ba_sta = self.battery.left_ba_sta * math.pow((1 + self.rate_load_pack_drone), self.left_packages)
 
     def deliver(self, cu_needs: str, w: float):
         pack_index = [i for i in range(len(self.package)) if self.package[i].index == cu_needs]
         self.package_delivered.append(cu_needs)
         self.package.pop(pack_index[0])
         self.left_packages: int = len(self.package)
+        self.battery.left_ba_sta = (self.battery.left_ba_sta - w) * (1 + rate_load_pack_drone)
         self. sum_energy_consumption(w)
         return 1
 

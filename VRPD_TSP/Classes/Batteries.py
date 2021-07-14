@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import uuid
+from Classes.PARAMs import flying_range_drone
 
 class Batteries:
-    def __init__(self, flying_range: int = 60):
+    def __init__(self, flying_range: int = flying_range_drone):
         """
         presents the batteries of drones
         :param flying_range: int, the maximum distance of drone can fly

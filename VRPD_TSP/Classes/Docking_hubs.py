@@ -3,10 +3,11 @@
 import uuid
 from Classes.Batteries import Batteries
 from Classes.Packages import Packages
-
+from Classes.PARAMs import max_bat_num_dockhub, flying_range_drone, max_pack_num_dockhub
 
 class Docking_hubs:
-    def __init__(self, num: int = 3, flying_range: int = 60, stock_packages: int = 20):
+    def __init__(self, num: int = max_bat_num_dockhub, flying_range: int = flying_range_drone,
+                 stock_packages: int = max_pack_num_dockhub):
         """
         Docking hub nodes, which has default packages number 20 packages
         :param num: the number of batteries can be saved in this docking hub.

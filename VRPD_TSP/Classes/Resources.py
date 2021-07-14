@@ -4,7 +4,6 @@
 from Classes.Packages import Packages
 from Classes.Batteries import Batteries
 from Classes.Minivan import Minivan
-from Classes.Drones import Drones
 
 from random import choice
 
