@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Minivan &mdash; VRP-D documentary 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> VRP-D documentary
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRP-D documentary</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>Minivan</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Minivan</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">Classes.Packages</span> <span class="kn">import</span> <span class="n">Packages</span>
+<span class="kn">from</span> <span class="nn">Classes.Batteries</span> <span class="kn">import</span> <span class="n">Batteries</span>
+<span class="c1"># from Classes.Docking_hubs import Docking_hubs</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">Classes.PARAMs</span> <span class="kn">import</span> <span class="n">flying_range_drone</span><span class="p">,</span> <span class="n">max_range_van</span><span class="p">,</span> <span class="n">max_pack_num_van</span><span class="p">,</span> <span class="n">max_bat_num_van</span>
+<span class="kn">from</span> <span class="nn">Classes.PARAMs</span> <span class="kn">import</span> <span class="n">rate_load_range_van</span><span class="p">,</span> <span class="n">rate_load_pack_van</span>
+<div class="viewcode-block" id="Minivan"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan">[docs]</a><span class="k">class</span> <span class="nc">Minivan</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_range</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_range_van</span><span class="p">,</span> <span class="n">max_pack</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_pack_num_van</span><span class="p">,</span>
+                 <span class="n">fly_range</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">flying_range_drone</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_bat_num_van</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        a minivan which can load several drones, deliver packages, change drone&#39;s batteries, etc.</span>
+<span class="sd">        :param max_range: the maximum running range of the van</span>
+<span class="sd">        :param max_pack: the maximum number of packages can be saved on the van</span>
+<span class="sd">        :param fly_range: the maximum flying range of the drone</span>
+<span class="sd">        :param num: the numbers of battery can be saved on the van</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;van_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="c1"># packages: receive reservation, reserve; unload to drone;</span>
+        <span class="c1">#           load from docking_hubs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">res_pack_list</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">del_cus_list</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_packages_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_pack</span>
+
+        <span class="c1"># energy: fuel state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span>
+
+        <span class="c1"># energy: batteries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_bat_res_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_bat_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_bat_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ini_batteries</span><span class="p">(</span><span class="n">flying_range</span><span class="o">=</span><span class="n">fly_range</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_range_van</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">rate_load_range_van</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_pack_van</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">rate_load_pack_van</span>
+
+    <span class="k">def</span> <span class="fm">__index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;+&quot;</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="s2">&quot; minivan has left fuel &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;+&quot;</span> <span class="o">*</span> <span class="mi">12</span>
+
+    <span class="c1"># &gt;--------------------functions for packages--------------------start</span>
+<div class="viewcode-block" id="Minivan.receive_pack_reservation"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.receive_pack_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">receive_pack_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        increases when the minivan receives a package reservation</span>
+<span class="sd">        :return: package reservation orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span></div>
+
+<div class="viewcode-block" id="Minivan.get_receive_pack_reservation"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.get_receive_pack_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">get_receive_pack_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return packages reservation received from drones</span>
+<span class="sd">        :return: number of packages reservation received</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span></div>
+
+<div class="viewcode-block" id="Minivan.load_packages"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.load_packages">[docs]</a>    <span class="k">def</span> <span class="nf">load_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        load a certain numbers of packages to the minivan</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_range_van</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Packages</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rate_load_pack_van</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Minivan.unload_to_drone"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.unload_to_drone">[docs]</a>    <span class="k">def</span> <span class="nf">unload_to_drone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        unload required packages to the drone</span>
+<span class="sd">        :param node:  given list of customer needs</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pack_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">node</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;found packages indexes are: &quot;</span><span class="p">,</span> <span class="n">pack_index</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="o">*</span><span class="mi">12</span> <span class="o">+</span> <span class="s2">&quot; Left packages and packages reservation &quot;</span> <span class="o">+</span> <span class="s2">&quot;before unloading &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;+&quot;</span><span class="o">*</span><span class="mi">12</span><span class="p">)</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">pack_index</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pack_index</span><span class="p">))]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">pack_index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">power</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">pack_index</span><span class="p">))</span>
+        <span class="c1"># unloading packages increases the distance the van can still run</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="o">*</span><span class="mi">12</span> <span class="o">+</span> <span class="s2">&quot; Left packages and packages reservation &quot;</span> <span class="o">+</span> <span class="s2">&quot;after unloading &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;+&quot;</span><span class="o">*</span><span class="mi">12</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+    <span class="k">def</span> <span class="nf">deliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;the van deliver packages through the needs but not the index of packages&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">del_cus_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">rate_load_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="Minivan.deliver"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.deliver">[docs]</a>    <span class="k">def</span> <span class="nf">deliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cus_needs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        deliver the packages to the customers</span>
+<span class="sd">        :param cus_needs: the customer needs, namely the index of required package</span>
+<span class="sd">        :param w: the minivan&#39;s cost to get the customer&#39;s location</span>
+<span class="sd">        :return:1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pack_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">cus_needs</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pack_index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">pack_index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_fuel</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">rate_load_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_pack</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">del_cus_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cus_needs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;+&quot;</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">+</span> <span class="s2">&quot; delivers a package successfully. &quot;</span> <span class="o">+</span> <span class="s2">&quot;+&quot;</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Minivan.reserve"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.reserve">[docs]</a>    <span class="k">def</span> <span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        when the left packages are empty on the minivan, reserves from docking hubs</span>
+<span class="sd">        :param node: str, the index of docking hubs that has received the package reservation</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">res_pack_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+    <span class="c1"># &lt;--------------------functions for packages--------------------end</span>
+
+    <span class="c1"># &gt;--------------------functions for batteries--------------------start</span>
+<div class="viewcode-block" id="Minivan.receive_bat_reservation"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.receive_bat_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">receive_bat_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get battery reservation from a drone</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_bat_res_num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Minivan.get_bat_reservation"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.get_bat_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">get_bat_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_bat_res_num</span></div>
+
+<div class="viewcode-block" id="Minivan.ini_batteries"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.ini_batteries">[docs]</a>    <span class="k">def</span> <span class="nf">ini_batteries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">flying_range</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initiate the batteries saved in the minivan for drones</span>
+<span class="sd">        :param num: number of batteries for drones</span>
+<span class="sd">        :param flying_range: maximum flying range of drones</span>
+<span class="sd">        :return: list of batteries initiated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Batteries</span><span class="p">(</span><span class="n">flying_range</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_bat_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_packages_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Minivan.get_batteries"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.get_batteries">[docs]</a>    <span class="k">def</span> <span class="nf">get_batteries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batteries</span></div>
+
+<div class="viewcode-block" id="Minivan.change_batteries"><a class="viewcode-back" href="../Classes/Minivan.html#Minivan.Minivan.change_batteries">[docs]</a>    <span class="k">def</span> <span class="nf">change_batteries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        changes the first battery to the drone</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_bat_num</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">batter</span></div></div>
+    <span class="c1"># &lt;--------------------functions for batteries--------------------end</span>
+
+
+<span class="c1"># max_range = 825</span>
+<span class="c1"># max_pack = 56</span>
+<span class="c1"># fly_range = 352</span>
+<span class="c1">#</span>
+<span class="c1"># minivan_1 = Minivan(max_range, max_pack)</span>
+<span class="c1"># [minivan_1.receive_pack_reservation() for i in range(8)]</span>
+<span class="c1"># print(minivan_1.get_receive_pack_reservation())</span>
+<span class="c1"># minivan_1.load_packages()</span>
+<span class="c1"># print(minivan_1.packages[0].index)</span>
+<span class="c1"># minivan_1.deliver(minivan_1.packages[0].index, 26)</span>
+<span class="c1"># print(minivan_1.del_cus_list)</span>
+<span class="c1"># a = [minivan_1.packages[i].index for i in range(1,5)]</span>
+<span class="c1"># print(a)</span>
+<span class="c1"># minivan_1.unload_to_drone(a)</span>
+<span class="c1">#</span>
+<span class="c1"># dck_hubs = Docking_hubs(6,fly_range)</span>
+<span class="c1"># minivan_1.reserve(dck_hubs.index)</span>
+<span class="c1"># [minivan_1.receive_bat_reservation() for i in range(5)]</span>
+<span class="c1"># print(minivan_1.get_bat_reservation())</span>
+<span class="c1"># minivan_1.ini_batteries(13, fly_range)</span>
+<span class="c1"># print(len(minivan_1.get_batteries()))</span>
+<span class="c1"># print(&quot; Baatteries changed&quot;, minivan_1.change_batteries())</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Huichen Shu.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

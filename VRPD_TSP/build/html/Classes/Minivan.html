@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Minivan module &mdash; VRP-D documentary 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> VRP-D documentary
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Minivan module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRP-D documentary</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Minivan module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/Classes/Minivan.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Minivan">
+<span id="minivan-module"></span><h1>Minivan module<a class="headerlink" href="#module-Minivan" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Minivan.Minivan">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Minivan.</span></span><span class="sig-name descname"><span class="pre">Minivan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_range</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_pack</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fly_range</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">65</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.change_batteries">
+<span class="sig-name descname"><span class="pre">change_batteries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.change_batteries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.change_batteries" title="Permalink to this definition">¶</a></dt>
+<dd><p>changes the first battery to the drone
+:return: 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.deliver">
+<span class="sig-name descname"><span class="pre">deliver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cus_needs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.deliver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.deliver" title="Permalink to this definition">¶</a></dt>
+<dd><p>deliver the packages to the customers
+:param cus_needs: the customer needs, namely the index of required package
+:param w: the minivan’s cost to get the customer’s location
+:return:1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.get_bat_reservation">
+<span class="sig-name descname"><span class="pre">get_bat_reservation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.get_bat_reservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.get_bat_reservation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.get_batteries">
+<span class="sig-name descname"><span class="pre">get_batteries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.get_batteries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.get_batteries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.get_receive_pack_reservation">
+<span class="sig-name descname"><span class="pre">get_receive_pack_reservation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.get_receive_pack_reservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.get_receive_pack_reservation" title="Permalink to this definition">¶</a></dt>
+<dd><p>return packages reservation received from drones
+:return: number of packages reservation received</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.ini_batteries">
+<span class="sig-name descname"><span class="pre">ini_batteries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flying_range</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.ini_batteries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.ini_batteries" title="Permalink to this definition">¶</a></dt>
+<dd><p>initiate the batteries saved in the minivan for drones
+:param num: number of batteries for drones
+:param flying_range: maximum flying range of drones
+:return: list of batteries initiated</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.load_packages">
+<span class="sig-name descname"><span class="pre">load_packages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.load_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.load_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>load a certain numbers of packages to the minivan
+:return: 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.receive_bat_reservation">
+<span class="sig-name descname"><span class="pre">receive_bat_reservation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.receive_bat_reservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.receive_bat_reservation" title="Permalink to this definition">¶</a></dt>
+<dd><p>get battery reservation from a drone
+:return: 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.receive_pack_reservation">
+<span class="sig-name descname"><span class="pre">receive_pack_reservation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.receive_pack_reservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.receive_pack_reservation" title="Permalink to this definition">¶</a></dt>
+<dd><p>increases when the minivan receives a package reservation
+:return: package reservation orders</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.reserve">
+<span class="sig-name descname"><span class="pre">reserve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.reserve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.reserve" title="Permalink to this definition">¶</a></dt>
+<dd><p>when the left packages are empty on the minivan, reserves from docking hubs
+:param node: str, the index of docking hubs that has received the package reservation
+:return: 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Minivan.Minivan.unload_to_drone">
+<span class="sig-name descname"><span class="pre">unload_to_drone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Minivan.html#Minivan.unload_to_drone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Minivan.Minivan.unload_to_drone" title="Permalink to this definition">¶</a></dt>
+<dd><p>unload required packages to the drone
+:param node:  given list of customer needs
+:return: 1</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Huichen Shu.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

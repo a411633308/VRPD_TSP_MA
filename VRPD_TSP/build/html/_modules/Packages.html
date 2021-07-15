@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Packages &mdash; VRP-D documentary 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> VRP-D documentary
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRP-D documentary</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>Packages</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Packages</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<div class="viewcode-block" id="Packages"><a class="viewcode-back" href="../Classes/Packages.html#Packages.Packages">[docs]</a><span class="k">class</span> <span class="nc">Packages</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This class initiates the deliver tasks in a unit of days.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_pack</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pac_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;package: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">index</span>
+
+<div class="viewcode-block" id="Packages.set_deliver_tasks"><a class="viewcode-back" href="../Classes/Packages.html#Packages.Packages.set_deliver_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">set_deliver_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set the deliver tasks</span>
+<span class="sd">        :param num: the given deliver tasks.</span>
+<span class="sd">        :return: a description of tasks initiation for logging.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_pack</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">num</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Packages.receive_reservation"><a class="viewcode-back" href="../Classes/Packages.html#Packages.Packages.receive_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">receive_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        #Docking hubs/Minivans# receive packages</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Packages.get_reservation_received"><a class="viewcode-back" href="../Classes/Packages.html#Packages.Packages.get_reservation_received">[docs]</a>    <span class="k">def</span> <span class="nf">get_reservation_received</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the number of packages reservation from #docking hubs/minivans#</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec_pack_res_num</span></div>
+
+<div class="viewcode-block" id="Packages.get_deliver_tasks"><a class="viewcode-back" href="../Classes/Packages.html#Packages.Packages.get_deliver_tasks">[docs]</a>    <span class="k">def</span> <span class="nf">get_deliver_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return the current state of deliver tasks.</span>
+<span class="sd">        :return: the number of deliver tasks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_pack</span></div></div>
+<span class="c1">#</span>
+<span class="c1"># class Packages_Drone(Packages):</span>
+<span class="c1">#     def __init__(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             This class is the sub-object of packages for drone.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.res_packages: list = list()</span>
+<span class="c1">#         self.del_packages: list = list()</span>
+<span class="c1">#         self.index = str(uuid.uuid1())[:10]</span>
+<span class="c1">#         print(&quot;+&quot;*12+&quot;initiate the list of packages deliverd and reserved for drones&quot;+&quot;+&quot;*12)</span>
+<span class="c1">#</span>
+<span class="c1">#     def reserve(self,res_node: str):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             presents the activation of reservation by the drone.</span>
+<span class="c1">#         :param res_node: str</span>
+<span class="c1">#             saves the node&#39;s index that has received the package reservation of the drone.</span>
+<span class="c1">#         :return: a description of this activation for logging</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.res_packages.append(res_node)</span>
+<span class="c1">#         print(&quot;+&quot;*12+&quot;reserves packages successfully&quot;+&quot;+&quot;*12)</span>
+<span class="c1">#         return &quot;+&quot;*12+&quot;reserves packages from&quot; + str(self.res_packages)+&quot;+&quot;*12</span>
+<span class="c1">#</span>
+<span class="c1">#     def deliver(self,del_customer: str):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             demonstrates the activation for each delivery of the drone.</span>
+<span class="c1">#         :param del_customer: str</span>
+<span class="c1">#             the customer node that has delivered by the drone.</span>
+<span class="c1">#         :return: a description of this activation for logging</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.del_packages.append(del_customer)</span>
+<span class="c1">#         return &quot;+&quot;*12+&quot;deliver package for customer&quot; + del_customer+&quot;+&quot;*12</span>
+<span class="c1">#</span>
+<span class="c1">#     def get_res_list(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             return the nodes list that receive the drone&#39;s package reservation.</span>
+<span class="c1">#         :return: the list of nodes that receive the drone&#39;s package reservation.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         return self.res_packages</span>
+<span class="c1">#</span>
+<span class="c1">#     def get_del_list(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             return the current state of packages delivered by the drone.</span>
+<span class="c1">#         :return: the packages delivered by the drone.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         return self.res_packages</span>
+<span class="c1">#</span>
+<span class="c1">#     def __index__(self):</span>
+<span class="c1">#         return self.index</span>
+<span class="c1">#</span>
+<span class="c1"># class Packages_Minivan(Packages):</span>
+<span class="c1">#     def __init__(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         demonstrates the packages that are included in the minivans.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.index = str(uuid.uuid1())[:10]</span>
+<span class="c1">#         self.res_packages: list = list()</span>
+<span class="c1">#         self.del_packages: list = list()</span>
+<span class="c1">#         self.rec_packages: int = 0  # packages reservation received</span>
+<span class="c1">#</span>
+<span class="c1">#     def reserve(self,res_node: str):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             presents the activation of reservation by the truck.</span>
+<span class="c1">#         :param res_node: str</span>
+<span class="c1">#             saves the node&#39;s index that has received the package reservation of the minivan.</span>
+<span class="c1">#         :return: a description of this activation for logging.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.res_packages.append(res_node)</span>
+<span class="c1">#         print(&quot;+&quot;*12+&quot;reserves packages successfully&quot;+&quot;+&quot;*12)</span>
+<span class="c1">#         return &quot;+&quot;*12+&quot;reserves packages from&quot; + str(self.res_packages)+&quot;+&quot;*12</span>
+<span class="c1">#</span>
+<span class="c1">#     def deliver(self,del_customer: str):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             demonstrates the activation for each delivery of the minivan.</span>
+<span class="c1">#         :param del_customer: str</span>
+<span class="c1">#             the customer node that has delivered by the minivan.</span>
+<span class="c1">#         :return: a description of this activation for logging.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.del_packages.append(del_customer)</span>
+<span class="c1">#         return &quot;+&quot;*12+&quot;deliver package for customer&quot; + del_customer+&quot;+&quot;*1</span>
+<span class="c1">#</span>
+<span class="c1">#     def receive_reservation(self):</span>
+<span class="c1">#         self.rec_packages += 1</span>
+<span class="c1">#         print(&quot;+&quot;*12+&#39;The minivan receives a package reservation from a drone.&#39;+&quot;+&quot;*12)</span>
+<span class="c1">#</span>
+<span class="c1">#     def uploaded_to_drone(self):</span>
+<span class="c1">#         self.rec_packages -= 1</span>
+<span class="c1">#         print(&quot;+&quot;*12+&#39;The minivan unloads a package reservation to a drone.&#39;+&quot;+&quot;*12)</span>
+<span class="c1">#</span>
+<span class="c1">#     def __index__(self):</span>
+<span class="c1">#         return self.index</span>
+<span class="c1">#</span>
+<span class="c1"># class Packages_DockingHubs(Packages):</span>
+<span class="c1">#     def __init__(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             Subclass of Packages for docking hub nodes.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#         self.index: str = str(uuid.uuid1())[:10]</span>
+<span class="c1">#         self.res_packages: int = 0</span>
+<span class="c1">#</span>
+<span class="c1">#     def reserved(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             receive a package reservation from drone/minivan.</span>
+<span class="c1">#         :return: a description for logging.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         self.res_packages += 1</span>
+<span class="c1">#         print(&quot;+&quot;*12+&quot;reserves packages successfully&quot;+&quot;+&quot;*12)</span>
+<span class="c1">#         return &quot;+&quot;*12+&quot;reserves packages from&quot; + str(self.res_packages)+&quot;+&quot;*12</span>
+<span class="c1">#</span>
+<span class="c1">#     def unload(self):</span>
+<span class="c1">#         self.res_packages -= 1</span>
+<span class="c1">#         print(&quot;+&quot;*12+&quot;Packages unloaded successfully&quot;+&quot;+&quot;*12)</span>
+<span class="c1">#         return &quot;+&quot;*12+&quot;Packages unloaded successfully&quot;+&quot;+&quot;*12</span>
+<span class="c1">#</span>
+<span class="c1">#     def get_res_num(self):</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#             the number of package reservation received from drone/minivan.</span>
+<span class="c1">#         :return: the number of packages reserved.</span>
+<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         return self.res_packages</span>
+<span class="c1">#</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Huichen Shu.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

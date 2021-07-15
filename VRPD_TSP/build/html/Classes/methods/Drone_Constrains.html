@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Drone_Constrains module &mdash; VRP-D documentary 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> VRP-D documentary
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Drone_Constrains module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">VRP-D documentary</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Drone_Constrains module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Classes/methods/Drone_Constrains.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Drone_Constrains">
+<span id="drone-constrains-module"></span><h1>Drone_Constrains module<a class="headerlink" href="#module-Drone_Constrains" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Batteries">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Drone_Constrains.</span></span><span class="sig-name descname"><span class="pre">Drone_Batteries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drone</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Classes.Drones.Drones</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Batteries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Batteries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Classes.methods.Constrains.Constrains</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Batteries.change">
+<span class="sig-name descname"><span class="pre">change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">battery</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Classes.Batteries.Batteries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Batteries.change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Batteries.change" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the left resource satisfies the required, then do the change.
+:param weight: int,
+once resources requirements
+:return: int,
+changed successfully, left resources; unsuccessfully, 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Batteries.reserve_battery">
+<span class="sig-name descname"><span class="pre">reserve_battery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clst_node_cost</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Batteries.reserve_battery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Batteries.reserve_battery" title="Permalink to this definition">¶</a></dt>
+<dd><p>the minimum cost for the drone to get the closet minivan or docking hub nodes.
+:param node: the index of node who will receive the battery reservation of the drone
+:param clst_node_cost:
+:return: successfully, 1; unsuccessfully, 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Batteries.use">
+<span class="sig-name descname"><span class="pre">use</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Batteries.use"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Batteries.use" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Constrains">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Drone_Constrains.</span></span><span class="sig-name descname"><span class="pre">Drone_Constrains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drone</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Classes.Drones.Drones</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Constrains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Constrains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Constrains.change_battery">
+<span class="sig-name descname"><span class="pre">change_battery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">van_left_battery</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">closet_customer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Classes.Batteries.Batteries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Constrains.change_battery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Constrains.change_battery" title="Permalink to this definition">¶</a></dt>
+<dd><p>when the drone is currently at a docking hub of minivan, can choose change battery or not
+:param van_left_battery: the left batteries number from van or docking hubs
+:param battery_node: the given battery from a docking hub or a minivan
+:param closet_customer: the left battery of the drone to the closet customer node
+:return: successfully, 1; unsuccessfully, 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Constrains.deliver_package">
+<span class="sig-name descname"><span class="pre">deliver_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Constrains.deliver_package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Constrains.deliver_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>the drone deliver packages through the order of the packages in the warehouses
+:param w: the costs of the drone to deliver a package
+:return: successfully, 1; unsuccessfully, 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Constrains.load_packages">
+<span class="sig-name descname"><span class="pre">load_packages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Constrains.load_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Constrains.load_packages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Constrains.reserve_packages">
+<span class="sig-name descname"><span class="pre">reserve_packages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clst_node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clst_cust</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Constrains.reserve_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Constrains.reserve_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the left battery on the drone is still enough to get at least one package and deliver
+:param node: the index of the closet node, who receives the drone’s package reservation
+:param clst_node: float,
+the costs of the drone to the closet minivan or docking hub node
+:param clst_cust: float,
+the costs of the drone to the closet customer node
+:return: successfully, 1; unsuccessfully, 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Constrains.stop_drone">
+<span class="sig-name descname"><span class="pre">stop_drone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_battery</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">closet_customer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Constrains.stop_drone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Constrains.stop_drone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Packages">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Drone_Constrains.</span></span><span class="sig-name descname"><span class="pre">Drone_Packages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drone</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Classes.Drones.Drones</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Classes.methods.Constrains.Constrains</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Packages.deliver">
+<span class="sig-name descname"><span class="pre">deliver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Packages.deliver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Packages.deliver" title="Permalink to this definition">¶</a></dt>
+<dd><p>deliver packages in the order of packages in the warehouses
+:param w: the costs of the drone to deliver this package
+:return: successfully, 1; unsuccessfully, 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Packages.load_packages">
+<span class="sig-name descname"><span class="pre">load_packages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Packages.load_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Packages.load_packages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Drone_Constrains.Drone_Packages.reserve_package">
+<span class="sig-name descname"><span class="pre">reserve_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Drone_Constrains.html#Drone_Packages.reserve_package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Drone_Constrains.Drone_Packages.reserve_package" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Huichen Shu.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

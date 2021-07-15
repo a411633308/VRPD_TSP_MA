@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Drones &mdash; VRP-D documentary 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> VRP-D documentary
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRP-D documentary</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>Drones</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Drones</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">Classes.Packages</span> <span class="kn">import</span> <span class="n">Packages</span>
+<span class="kn">from</span> <span class="nn">Classes.Batteries</span> <span class="kn">import</span> <span class="n">Batteries</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">Classes.PARAMs</span> <span class="kn">import</span> <span class="n">rate_load_range_drone</span><span class="p">,</span> <span class="n">rate_load_pack_drone</span>
+
+<div class="viewcode-block" id="Drones"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones">[docs]</a><span class="k">class</span> <span class="nc">Drones</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flying_range</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">65</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The drone node.</span>
+<span class="sd">        :param flying_range: maximum flying range of the drone</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dro_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span>
+        <span class="c1"># about battery</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flying_range</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">flying_range</span>  <span class="c1"># think twice which kind of type should be used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="p">:</span> <span class="n">Batteries</span> <span class="o">=</span> <span class="n">Batteries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flying_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_consumption</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># sum of Wro_dr i, i = N+</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bat_res_list</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="c1"># about packages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package_delivered</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pack_res_list</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_range_drone</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">rate_load_range_drone</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_pack_drone</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">rate_load_pack_drone</span>
+
+    <span class="k">def</span> <span class="fm">__index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">index</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;The drone &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="s2">&quot;has &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">))</span> <span class="o">+</span> \
+            <span class="s2">&quot; packages in warehouses, &quot;</span> <span class="o">+</span> <span class="s2">&quot;left energy &quot;</span> <span class="o">+</span> \
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, and packages delivered &quot;</span> <span class="o">+</span> \
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package_delivered</span><span class="p">)</span>
+
+    <span class="c1"># &gt;--------------------functions for packages--------------------start</span>
+<div class="viewcode-block" id="Drones.load_packages"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.load_packages">[docs]</a>    <span class="k">def</span> <span class="nf">load_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">right_locate</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This drone loads packages from a minivan/docking hub</span>
+<span class="sd">        :param right_locate: whether the drones is at a docking hub or minivan</span>
+<span class="sd">        :param num: the number of packages that can be loaded.</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">right_locate</span><span class="p">:</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Packages</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rate_load_pack_drone</span><span class="p">),</span> <span class="n">num</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Drones.load_from_van_dock"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.load_from_van_dock">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_van_dock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_range_drone</span>
+        <span class="c1"># self.package = packages_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Packages</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Packages</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_load_pack_drone</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Drones.deliver"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.deliver">[docs]</a>    <span class="k">def</span> <span class="nf">deliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cu_needs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="n">pack_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">cu_needs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package_delivered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cu_needs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">pack_index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">left_ba_sta</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rate_load_pack_drone</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span> <span class="n">sum_energy_consumption</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Drones.get_left_packages"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.get_left_packages">[docs]</a>    <span class="k">def</span> <span class="nf">get_left_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span></div>
+
+<div class="viewcode-block" id="Drones.get_left_packages_num"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.get_left_packages_num">[docs]</a>    <span class="k">def</span> <span class="nf">get_left_packages_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_packages</span></div>
+
+<div class="viewcode-block" id="Drones.reserve"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.reserve">[docs]</a>    <span class="k">def</span> <span class="nf">reserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        #Drone/Minivan# reserves packages</span>
+<span class="sd">        :param nodes: the index who receives the packages reservation.</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pack_res_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Drones.get_pack_reservation"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.get_pack_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">get_pack_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the list of packages reservation received from #drones/minivans#</span>
+<span class="sd">        :return: packages reservation received</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pack_res_list</span></div>
+
+    <span class="c1"># &lt;--------------------functions for packages--------------------end</span>
+
+    <span class="c1"># &gt;--------------------functions for energy--------------------start</span>
+<div class="viewcode-block" id="Drones.battery_changed"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.battery_changed">[docs]</a>    <span class="k">def</span> <span class="nf">battery_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">battery</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Batteries is being changed, its reservation empties too.</span>
+<span class="sd">        :return:1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="p">:</span> <span class="n">Batteries</span> <span class="o">=</span> <span class="n">battery</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">ba_res_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Drones.sum_energy_consumption"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.sum_energy_consumption">[docs]</a>    <span class="k">def</span> <span class="nf">sum_energy_consumption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Total energy consumptions adds, and battery states decreases.</span>
+<span class="sd">        :param w:</span>
+<span class="sd">        :return:1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_consumption</span> <span class="o">+=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">use_battery</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Drones.reserve_battery"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.reserve_battery">[docs]</a>    <span class="k">def</span> <span class="nf">reserve_battery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This drone reserves a battery from a docking hub/minivan</span>
+<span class="sd">        :param node: the index of the docking hub/minivan</span>
+<span class="sd">        :return: 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bat_res_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Drones.get_bat_reservation"><a class="viewcode-back" href="../Classes/Drones.html#Drones.Drones.get_bat_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">get_bat_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bat_res_list</span></div></div>
+
+    <span class="c1"># &lt;--------------------functions for energy--------------------end</span>
+
+<span class="c1">#</span>
+<span class="c1"># flying_range = 254</span>
+<span class="c1"># drone_1 = Drones(flying_range)</span>
+<span class="c1"># drone_1.load_packages(8)</span>
+<span class="c1"># drone_1.deliver(drone_1.package[0].index, 25)</span>
+<span class="c1">#</span>
+<span class="c1"># dck_hub = Docking_hubs(12, flying_range)</span>
+<span class="c1"># print(&quot;docking hub index: &quot;, dck_hub.index)</span>
+<span class="c1"># drone_1.reserve(dck_hub.index)</span>
+<span class="c1"># print(drone_1.pack_res_list)</span>
+<span class="c1"># print(drone_1.get_pack_reservation())</span>
+<span class="c1"># print(drone_1.battery.left_ba_sta)</span>
+<span class="c1"># drone_1.battery_changed()</span>
+<span class="c1"># print(drone_1.battery.left_ba_sta)</span>
+<span class="c1"># print(drone_1.reserve_battery(dck_hub.index))</span>
+<span class="c1"># print(drone_1.get_bat_reservation())</span>
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Huichen Shu.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

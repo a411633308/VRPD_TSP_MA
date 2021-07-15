@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Van_Constrains &mdash; VRP-D documentary 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> VRP-D documentary
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRP-D documentary</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>Van_Constrains</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Van_Constrains</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">Classes.methods.Constrains</span> <span class="kn">import</span> <span class="n">Constrains</span>
+<span class="kn">from</span> <span class="nn">Classes.Batteries</span> <span class="kn">import</span> <span class="n">Batteries</span>
+<span class="kn">from</span> <span class="nn">Classes.Drones</span> <span class="kn">import</span> <span class="n">Drones</span>
+<span class="kn">from</span> <span class="nn">Classes.Packages</span> <span class="kn">import</span> <span class="n">Packages</span>
+<span class="kn">from</span> <span class="nn">Classes.Minivan</span> <span class="kn">import</span> <span class="n">Minivan</span>
+<span class="kn">from</span> <span class="nn">Classes.Vehicles</span> <span class="kn">import</span> <span class="n">Vehicles</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="c1"># from Classes.PARAMs import rate_load_range_van, rate_load_pack_van</span>
+
+<div class="viewcode-block" id="Van_Batteries"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Batteries">[docs]</a><span class="k">class</span> <span class="nc">Van_Batteries</span><span class="p">(</span><span class="n">Constrains</span><span class="p">):</span>
+    <span class="c1"># @Constrains.abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minivan</span><span class="p">:</span> <span class="n">Minivan</span><span class="p">,</span> <span class="n">drone</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        manage the battery constrains on the van</span>
+<span class="sd">        :param minivan: the class of minivan in this single salesman traveling problem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drone</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Drones</span><span class="p">]</span> <span class="o">=</span> <span class="n">drone</span>  <span class="c1"># the drones that have landed on the van</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="p">:</span> <span class="n">Minivan</span> <span class="o">=</span> <span class="n">minivan</span>  <span class="c1"># the minivan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Batteries</span><span class="p">]</span> <span class="o">=</span> <span class="n">minivan</span><span class="o">.</span><span class="n">batteries</span>  <span class="c1"># the list of batteries that have saved on the van</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">max_bat_num</span>  <span class="c1"># the maximum batteries number that can save on the van</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">left_bat_num</span>  <span class="c1"># the levt batteries number on the van</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># the indexes of drones who have got a packages from the van</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">used_batteries</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># the used batteries on the van</span>
+
+<div class="viewcode-block" id="Van_Batteries.change"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Batteries.change">[docs]</a>    <span class="k">def</span> <span class="nf">change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">drone_index</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        change the first battery from the battery list to the drone</span>
+<span class="sd">        :param drone_index: the drone who needs to get a new battery</span>
+<span class="sd">        :return: successfully, the battery who will be changed onto the drone; unsuccessfully, 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">drone_index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">drone_index</span><span class="p">)</span>  <span class="c1"># add the index of drone who has got the full-charged battery</span>
+            <span class="c1"># find the related drone that have landed on the van</span>
+            <span class="n">related_drone</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drone</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drone</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">drone_index</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;found battery drone index on the van&quot;</span><span class="p">,</span> <span class="n">related_drone</span><span class="p">)</span>
+            <span class="c1"># if the related drone is already landed at the van, then change its battery</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">related_drone</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">related_drone</span> <span class="o">=</span> <span class="n">related_drone</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">used_batteries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drone</span><span class="p">[</span><span class="n">related_drone</span><span class="p">]</span><span class="o">.</span><span class="n">battery</span><span class="p">)</span>  <span class="c1"># the index of batteries changed from the drone</span>
+                <span class="c1"># change the battery left on the van</span>
+                <span class="n">batter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">change_batteries</span><span class="p">()</span>
+                <span class="c1"># update the battery state on the drone</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">drone</span><span class="p">[</span><span class="n">related_drone</span><span class="p">]</span><span class="o">.</span><span class="n">battery_changed</span><span class="p">(</span><span class="n">batter</span><span class="p">)</span>
+
+                <span class="c1"># update the batteries on the van constrains.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batteries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">batteries</span>  <span class="c1"># delete the battery given from the battery list</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batteries</span><span class="p">)</span>  <span class="c1"># update the left batteries number currently</span>
+                <span class="k">return</span> <span class="n">batter</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div></div>
+
+
+<div class="viewcode-block" id="Van_Packages"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Packages">[docs]</a><span class="k">class</span> <span class="nc">Van_Packages</span><span class="p">(</span><span class="n">Constrains</span><span class="p">):</span>
+    <span class="c1"># @Constrains.abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minivan</span><span class="p">:</span> <span class="n">Minivan</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The constrains of the packages on the van.</span>
+<span class="sd">        :param minivan:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="p">:</span> <span class="n">Minivan</span> <span class="o">=</span> <span class="n">minivan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Packages</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">packages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">max_packages_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Van_Packages.change"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Packages.change">[docs]</a>    <span class="k">def</span> <span class="nf">change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cus_index</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This van deliver a package by itself</span>
+<span class="sd">        :param cus_index: the index of package that the customer required</span>
+<span class="sd">        :param w: the fuel cost for the minivan to deliver the package</span>
+<span class="sd">        :return: successfully, the left packages in the van; unsuccessfully, 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cus_index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">cus_index</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">left_pack</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Packages.reset"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Packages.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        judge whether the left package is empty or not</span>
+<span class="sd">        :return: yes, recall reload() function; no, return 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># [self.packages.append(Packages()) for i in range(self.max-self.left)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">load_packages</span><span class="p">()</span>  <span class="c1"># reload packages from the docking hubs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>  <span class="c1"># restates the number of left packages</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Packages.deliver"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Packages.deliver">[docs]</a>    <span class="k">def</span> <span class="nf">deliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param w:</span>
+<span class="sd">        :return: return the left fuel of the minivan</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">packages</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">packages</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">left_fuel</span></div></div>
+
+
+<div class="viewcode-block" id="Van_Constrains"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains">[docs]</a><span class="k">class</span> <span class="nc">Van_Constrains</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vehicle</span><span class="p">:</span> <span class="n">Vehicles</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drones_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">drones</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="p">:</span> <span class="n">Minivan</span> <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">vehicle_set</span><span class="p">[</span><span class="s1">&#39;Minivan&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">vehicle_set</span><span class="p">[</span><span class="s1">&#39;Drones&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">van_batteries</span><span class="p">:</span> <span class="n">Van_Batteries</span> <span class="o">=</span> <span class="n">Van_Batteries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="p">:</span> <span class="n">Constrains</span> <span class="o">=</span> <span class="n">Constrains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">max_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">van_packages</span><span class="p">:</span> <span class="n">Van_Packages</span> <span class="o">=</span> <span class="n">Van_Packages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">route</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span> <span class="c1"># whether there&#39;s necessary to save its cover route or not.</span>
+        <span class="c1"># self.pack_load_rate: float = rate_load_range_van</span>
+        <span class="c1"># self.load_rate: float = rate_load_pack_van</span>
+
+<span class="c1"># -----------------------functions for battery constrains-----------------------</span>
+<div class="viewcode-block" id="Van_Constrains.change_battery"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.change_battery">[docs]</a>    <span class="k">def</span> <span class="nf">change_battery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">drone_index</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If (1)the drone who reserves the battery arrives at the minivan, (2) the battery reservation number of this van</span>
+<span class="sd">        is larger than or equal to 1, the first object of the battery list will be deleted from the minivan, and as the</span>
+<span class="sd">        return object of this function.</span>
+<span class="sd">        whether the drone who has reserved a battery from the minivan has arrived at the minivan or not?</span>
+<span class="sd">        :param drone_index: str,</span>
+<span class="sd">        the index of drone who reserved a battery from the minivan</span>
+<span class="sd">        :return: successfully changed, the battery for the drone; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">drone_</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">drone_index</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;left batteries and found drone_index: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">drone_</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_batteries</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">drone_</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_batteries</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; whether this branch is ran&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">[</span><span class="n">drone_</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">batter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_batteries</span><span class="o">.</span><span class="n">change</span><span class="p">(</span><span class="n">drone_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">[</span><span class="n">drone_</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">batter</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.receive_battery_reservation"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.receive_battery_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">receive_battery_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the left battery is not empty, then receive the battery reservation.</span>
+<span class="sd">        :return: successfully, 1; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_batteries</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">receive_bat_reservation</span><span class="p">()</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+    <span class="c1"># -----------------------functions for battery constrains-----------------------</span>
+
+    <span class="c1"># -----------------------functions for fuel and packages constrains-----------------------</span>
+<div class="viewcode-block" id="Van_Constrains.deliver_packages"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.deliver_packages">[docs]</a>    <span class="k">def</span> <span class="nf">deliver_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">closet_dckh</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The van must have more fuel than delivering the packages at first and then come back to this node, go to</span>
+<span class="sd">        the closet docking hub node, and then pack.</span>
+<span class="sd">        :param closet_dckh: float,</span>
+<span class="sd">        the fuel costs for the van to the closet docking hub node</span>
+<span class="sd">        the index of packages that is the required needs of customer.</span>
+<span class="sd">        :param w: int,</span>
+<span class="sd">        the fuel costs for this deliver</span>
+<span class="sd">        :return: successfully, 1; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;=</span> <span class="n">w</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">closet_dckh</span><span class="p">:</span>
+            <span class="n">left_fuel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_packages</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left_fuel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">deliver</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left_fuel</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.receive_packages_reservation"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.receive_packages_reservation">[docs]</a>    <span class="k">def</span> <span class="nf">receive_packages_reservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If deliver through packages indexes, the reservation of packages is required.</span>
+<span class="sd">        :return: successfully, 1; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_packages</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">receive_pack_reservation</span><span class="p">()</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.reserve_packages_from_docking_hubs"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.reserve_packages_from_docking_hubs">[docs]</a>    <span class="k">def</span> <span class="nf">reserve_packages_from_docking_hubs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">closet_dckh</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">closet_cus</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the van&#39;s left fuel are able to support loading packages from the closet docking hubs and deliver the</span>
+<span class="sd">        packages to the closet customer.</span>
+<span class="sd">        :param node: the index of docking hub who receives the van&#39;s package reservation.</span>
+<span class="sd">        :param closet_dckh: the weight of the van to the closet docking hub node</span>
+<span class="sd">        :param closet_cus: the weight of the van to the closet customer node</span>
+<span class="sd">        :return: successfully, 1; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_packages</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span> <span class="o">&gt;</span> <span class="n">closet_dckh</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">closet_cus</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.load_packages"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.load_packages">[docs]</a>    <span class="k">def</span> <span class="nf">load_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">closet_dckh</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        reload packages onto the van with a certain rate, load_rate</span>
+<span class="sd">        :param load_rate: the rate between load weight and the distance it can still run</span>
+<span class="sd">        :param closet_dckh: the distance cost for the van to get the closet docking hub node.</span>
+<span class="sd">        :return: successfully, 1; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">closet_dckh</span><span class="p">:</span>
+            <span class="n">num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_rate</span><span class="p">)</span>  <span class="c1"># get the integer according to the left fuel</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">load_packages</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.unload_to_drone"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.unload_to_drone">[docs]</a>    <span class="k">def</span> <span class="nf">unload_to_drone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        unload the packages to the drone, if the left packages on the van are enough for they both.</span>
+<span class="sd">        :param node:</span>
+<span class="sd">        :return: successfully, 1 ; unsuccessfully, 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_packages</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">unload_to_drone</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span><span class="o">.</span><span class="n">left_fuel</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+    <span class="c1"># -----------------------functions for fuel and packages constrains------------------------</span>
+
+    <span class="c1"># -----------------------functions for drones landed on the van constrains------------------------</span>
+<div class="viewcode-block" id="Van_Constrains.land_drones"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.land_drones">[docs]</a>    <span class="k">def</span> <span class="nf">land_drones</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">drone</span><span class="p">:</span> <span class="n">Drones</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drones_num</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">drone</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.launch_drone"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.launch_drone">[docs]</a>    <span class="k">def</span> <span class="nf">launch_drone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">drone_index</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">drone_</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">drone_index</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drones</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">drone_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Van_Constrains.stop_van"><a class="viewcode-back" href="../Classes/methods/Van_Constrains.html#Van_Constrains.Van_Constrains.stop_van">[docs]</a>    <span class="k">def</span> <span class="nf">stop_van</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">closet_dockinghub</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">closet_customer</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">van_fuel</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">closet_customer</span> <span class="o">+</span> <span class="n">closet_dockinghub</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">minivan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div></div>
+    <span class="c1"># -----------------------functions for drones landed on the van constrains------------------------</span>
+
+
+<span class="c1"># from Classes.Resources import Resources</span>
+<span class="c1"># from Classes.Vehicles import Vehicles</span>
+<span class="c1"># from Classes.Routes import Routes</span>
+<span class="c1">#</span>
+<span class="c1"># # two kinds of class for the STP-D, nodes and vehicles</span>
+<span class="c1"># # -------------- 1.initiate the classes of routes and vehicles</span>
+<span class="c1"># route = Routes()  # customer, depot and docking hubs nodes</span>
+<span class="c1"># route.init_graph_nodes()</span>
+<span class="c1">#</span>
+<span class="c1"># vehicle = Vehicles()  # two drones and a minivan are a set of mother ship system</span>
+<span class="c1"># vehicle.init_sets()  # initiate the three vehicles according to the default parameters</span>
+<span class="c1">#</span>
+<span class="c1"># [print(&quot; Drones on the van: &quot;, vehicle.drones[i].index) for i in range(len(vehicle.drones))]</span>
+<span class="c1">#</span>
+<span class="c1"># resources = Resources()</span>
+<span class="c1"># resources.collect_overall_resources(minivan=vehicle.minivan, drones=vehicle.drones, dck_hubs=route.nodes_docking_hubs)</span>
+<span class="c1">#</span>
+<span class="c1"># ab_c = Van_Constrains(vehicle)  # according to the initial classes, check whether they satisfy certain constrains</span>
+<span class="c1"># from Classes.methods.Drone_Constrains import Drone_Constrains</span>
+<span class="c1"># drone_constrains: list = [Drone_Constrains(ab_c.drones[i]) for i in range(len(ab_c.drones))]</span>
+<span class="c1">#</span>
+<span class="c1"># ab_c.launch_drone(ab_c.drones[0].index)</span>
+<span class="c1">#</span>
+<span class="c1"># # -------------- 2.the constrains for the system to finish the tasks like deliver packages, change battery, etc</span>
+<span class="c1"># # drone constrains</span>
+<span class="c1">#</span>
+<span class="c1"># drone_1 = drone_constrains[0]</span>
+<span class="c1"># # print(drone_1.drone_index)</span>
+<span class="c1"># # print(&quot;left packages number and battery state of the drone: &quot;, drone_1.drone_packages.left,</span>
+<span class="c1"># #       drone_1.drone_batteries.left)</span>
+<span class="c1"># # drone_1.deliver_package(</span>
+<span class="c1"># #     26)  # although the deliver costs of each package is integer but the load weight of the drone decreases</span>
+<span class="c1"># # # its left battery state increases simutaniously.</span>
+<span class="c1"># print(&quot;1. deliver, left packages number and battery state &quot;, drone_1.drone_packages.left, drone_1.drone_batteries.left)</span>
+<span class="c1"># drone_1.deliver_package(26)</span>
+<span class="c1"># print(&quot;2. deliver, left packages number and battery state &quot;, drone_1.drone_packages.left, drone_1.drone_batteries.left)</span>
+<span class="c1"># drone_1.deliver_package(26)</span>
+<span class="c1"># print(&quot;3. deliver, left packages number and battery state &quot;, drone_1.drone_packages.left, drone_1.drone_batteries.left)</span>
+<span class="c1"># drone_1.deliver_package(26)</span>
+<span class="c1"># print(&quot;4. deliver, left packages number and battery state &quot;, drone_1.drone_packages.left, drone_1.drone_batteries.left)</span>
+<span class="c1">#</span>
+<span class="c1"># battery = ab_c.change_battery(</span>
+<span class="c1">#     drone_index=ab_c.drones[0].index)  # whether change battery of certain drone satisfy the relevant constrains</span>
+<span class="c1"># print(&quot;battery that will be changed onto the drone: &quot;, battery)</span>
+<span class="c1"># drone_1.change_battery(ab_c.van_batteries.left, 30, battery)</span>
+<span class="c1"># drone_1.load_packages()</span>
+<span class="c1"># landed_drone = drone_1.stop_drone(0, 50)</span>
+<span class="c1"># ab_c.land_drones(landed_drone)</span>
+<span class="c1">#</span>
+<span class="c1"># ab_c.stop_van(60,500)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Huichen Shu.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

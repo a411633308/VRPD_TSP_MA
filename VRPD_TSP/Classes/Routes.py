@@ -35,12 +35,9 @@ class Routes:
     def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
         """
         init sequence of nodes for a graph
-        :param dckh_num: int,
-            the number of docking hub nodes in the graph
-        :param dep_num: int,
-            the number of depot nodes
-        :param cus_num: int,
-            the number of customer nodes
+        :param dckh_num: int, the number of docking hub nodes in the graph
+        :param dep_num: int, the number of depot nodes
+        :param cus_num: int, the number of customer nodes
         :return: initiated graph
         """
         self.nodes_docking_hubs = [Docking_hubs(self.bat_num_dock, self.flying_range)
