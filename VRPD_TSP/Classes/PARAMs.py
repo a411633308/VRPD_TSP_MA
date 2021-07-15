@@ -14,3 +14,12 @@ max_pack_num_dockhub: int = 50
 
 max_bat_num_van: int = 2
 max_bat_num_dockhub: int = 5
+
+dockhub_num: int = 3
+depot_num: int = 1
+customer_num: int = 14
+customer_needs: dict = [1, False]
+
+drones_num_on_van: int = 2
+van_num: int = 1
+default_drone_pack_num: int = 5

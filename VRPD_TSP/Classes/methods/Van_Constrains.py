@@ -8,7 +8,7 @@ from Classes.Packages import Packages
 from Classes.Minivan import Minivan
 from Classes.Vehicles import Vehicles
 import math
-from Classes.PARAMs import rate_load_range_van, rate_load_pack_van
+# from Classes.PARAMs import rate_load_range_van, rate_load_pack_van
 
 class Van_Batteries(Constrains):
     # @Constrains.abstractmethod

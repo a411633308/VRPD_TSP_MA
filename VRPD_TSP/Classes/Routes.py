@@ -8,11 +8,12 @@ from Classes.Customers import Customers
 
 import numpy as np
 from random import choice
-
+from Classes.PARAMs import max_bat_num_dockhub, flying_range_drone, customer_needs, dockhub_num, depot_num, customer_num
 # import matplotlib.pyplot as plt
 
 class Routes:
-    def __init__(self, bat_dock_num: int = 3, drone_fly_range: int = 60, cust_needs: dict = [1, False]):
+    def __init__(self, bat_dock_num: int = max_bat_num_dockhub, drone_fly_range: int = flying_range_drone,
+                 cust_needs: dict = customer_needs):
         """
         the graph consist of docking hubs, depot and customers nodes
         :param bat_dock_num: int, the batteries number saved in docking hubs
@@ -31,7 +32,7 @@ class Routes:
         self.color_map: list[str] = list()
         self.G = nx.Graph()
 
-    def init_graph_nodes(self, dckh_num: int = 3, dep_num: int = 6, cus_num: int = 13):
+    def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
         """
         init sequence of nodes for a graph
         :param dckh_num: int,
