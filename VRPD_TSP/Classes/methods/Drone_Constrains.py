@@ -105,6 +105,7 @@ class Drone_Constrains:
         self.drone_batteries: Drone_Batteries = Drone_Batteries(self.drones)
         self.rate_load_pack_drone: float = rate_load_pack_drone
         self.rate_load_range_drone: float = rate_load_range_drone
+        self.cost_rate: float = random.uniform(0.5, 1)
 
     def deliver_package(self, cust_needs: str, w: float):
         """
@@ -112,7 +113,7 @@ class Drone_Constrains:
         :param cust_needs: the index of packages that is required by a customer
         :return: successfully, 1; unsuccessfully, 0
         """
-        flag_1 = self.drone_batteries.use(w)
+        flag_1 = self.drone_batteries.use(w*self.cost_rate)
         flag_2 = self.drone_packages.deliver(cust_needs)
         if flag_1 == 1 and flag_2 == 1:
             return 1
@@ -125,7 +126,7 @@ class Drone_Constrains:
         :param w: the costs of the drone to deliver a package
         :return: successfully, 1; unsuccessfully, 0.
         """
-        flag_1 = self.drone_batteries.use(w=w)
+        flag_1 = self.drone_batteries.use(w=w*self.cost_rate)
         flag_2 = self.drone_packages.deliver(w=w)
         # warning! there might be flag_1 is 1 but flag_2 is 0, packages has no change, but the
         #  battery state of the drone is not the same as before.

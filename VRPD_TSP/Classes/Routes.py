@@ -111,35 +111,46 @@ class Routes:
     def set_color_weights_type(self, colors):
         for n, nbrs in self.G.adj.items():
             if n[:3] == 'cus':
+                self.G.nodes[n]['type'] = 'customer'
                 self.color_map.append(colors[0])
-                cus_node: Customers = self.find_customers(n)
+                cus_node: Customers = self.find_node(n)
                 if type(cus_node) == type(self.nodes_customers[0]):
                     self.G.nodes[n]['non_fly_zone'] = cus_node.in_non_flying
                     self.G.nodes[n]['demand'] = cus_node.pack_needs # default as 1, but actually need to recall with searching function
             elif n[:3] == 'dep':
+                self.G.nodes[n]['type'] = 'depot'
                 self.color_map.append(colors[1])
                 for nbr, eattr in nbrs.items():
                     eattr['van_dro_set'] = 1
             else:
+                self.G.nodes[n]['type'] = 'docking hub'
                 self.color_map.append(colors[2])
                 self.G.nodes[n]['max_ba'] = max_bat_num_dockhub
                 self.G.nodes[n]['max_pa'] = max_pack_num_dockhub
 
             for nbr, eattr in nbrs.items():
-                eattr['weight_dro'] = round(random.random() * random.uniform(0, 50), 3)
-                eattr['weight_van'] = round(random.random() * random.uniform(0, 50), 3)
-                if eattr['weight_dro'] < eattr['weight_van']:
-                    eattr['veh_dro'] = 1
-                else:
-                    eattr['veh_van'] = 1
+                node_1 = self.find_node(n)
+                node_2 = self.find_node(nbr)
+                import numpy as np
+                vec1 = np.array([node_1.lat, node_1.long])
+                vec2 = np.array([node_2.lat, node_2.long])
+                distance_1 = round(np.linalg.norm(vec1-vec2))
+                # distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))
+                eattr['weight'] = distance_1
+                # round(random.random() * random.uniform(0, 50), 3)
+                # eattr['weight_van'] = round(random.random() * random.uniform(0, 50), 3)
+                # if eattr['weight_dro'] < eattr['weight_van']:
+                #     eattr['veh_dro'] = 1
+                # else:
+                #     eattr['veh_van'] = 1
         return self.color_map
     # It's still short of graph with specific font size and format
 
-    def find_customers(self, cus_index: str):
-        found_index = [i for i in range(len(self.nodes_customers))
-                       if self.nodes_customers[i].index==cus_index]
+    def find_node(self, cus_index: str):
+        found_index = [i for i in range(len(self.nodes_graph))
+                       if self.nodes_graph[i].index==cus_index]
         if len(found_index)>0:
-            return self.nodes_customers[found_index[0]]
+            return self.nodes_graph[found_index[0]]
         else:
             return ValueError
 #

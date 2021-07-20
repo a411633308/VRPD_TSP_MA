@@ -7,6 +7,7 @@ from Classes.Drones import Drones
 from Classes.Packages import Packages
 from Classes.Minivan import Minivan
 from Classes.Vehicles import Vehicles
+import random
 import math
 # from Classes.PARAMs import rate_load_range_van, rate_load_pack_van
 
@@ -115,6 +116,7 @@ class Van_Constrains:
         self.van_batteries: Van_Batteries = Van_Batteries(self.minivan, self.drones)
         self.van_fuel: Constrains = Constrains(self.minivan.max_range)
         self.van_packages: Van_Packages = Van_Packages(self.minivan)
+        self.cost_rate: float = random.uniform(1, 1.3)
         self.route: list[str] = list() # whether there's necessary to save its cover route or not.
         # self.pack_load_rate: float = rate_load_range_van
         # self.load_rate: float = rate_load_pack_van
@@ -168,7 +170,7 @@ class Van_Constrains:
             left_fuel = self.van_packages.deliver(w)
             self.van_fuel.left = left_fuel
             self.van_fuel.weight.append(w)
-            self.minivan.deliver(w)
+            self.minivan.deliver(w*self.cost_rate)
             self.van_fuel.left = left_fuel
             return 1
         else:

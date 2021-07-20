@@ -5,7 +5,7 @@ import random
 # ---------------------- params for the vehicles -------------------------------------------
 drones_num_on_van: int = 2  # the number of drones on the minivan
 van_num: int = 1  # the number of minivan used in a single TSP-D problem
-flying_range_drone: float = 65
+flying_range_drone: float = 120
 max_range_van: float = 300
 rate_load_range_drone: float = random.uniform(0, 0.1)  # how many packages should be loaded according to the left energy
 rate_load_range_van: float = random.uniform(0.3, 0.5)

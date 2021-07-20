@@ -27,8 +27,8 @@ class Solution:
         self.graph_params_list: list = graph_params
         self.non_flying_num: int = non_fly_num
         self.adj_matrix: any = None
-        self.dro_weight_matrix: any = None
-        self.van_weight_matrix: any = None
+        self.weight_matrix: any = None
+        # self.van_weight_matrix: any = None
         self.solution_matrix_drones: list = list()
         self.solution_matrix_van: bytearray = None
 
@@ -68,30 +68,7 @@ class Solution:
         self.van_connection_matrix: any
         self.nodes_oder = [self.route.nodes_graph[i].index for i in range(len(self.route.nodes_graph))]
 
-    def plot_graph_droWeight(self, graph_url: str):
-        """
-        plot the graph with drone weight as label of the edge
-        :param graph_url: the url address to save the iamge
-        :return: none
-        """
-        # print("edges and nodes numbers: ",self.graph.number_of_edges(),
-        #       self.graph.number_of_nodes())
-        plt.rcParams['figure.figsize'] = (40, 40)
-        plt.rcParams['font.size'] = 50
-        plt.title('Map Graph with Weights of Drone')
-
-        nx.draw(self.graph, node_color=self.color_map, with_labels=True, node_size=1200, font_size=25)
-        pos = nx.spring_layout(self.route.G)
-
-        edge_labels = nx.get_edge_attributes(self.route.G, 'weight_dro')
-        nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels, font_size=25)
-        # edge_labels_2 = nx.get_edge_attributes(self.route.G, 'weight_van')
-        # nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels_2)
-
-        plt.savefig(graph_url)
-        plt.close()
-
-    def plot_graph_vanWeight(self, graph_url: str):
+    def plot_graph_Weight(self, graph_url: str):
         """
         plot the graph with van weight as label of the edge
         :param graph_url: the url address to save the iamge
@@ -99,18 +76,18 @@ class Solution:
         """
         # print("edges and nodes numbers: ",self.graph.number_of_edges(),
         #       self.graph.number_of_nodes())
-        plt.rcParams['figure.figsize'] = (40, 40)
-        plt.rcParams['font.size'] = 50
-        plt.title('Map Graph with Weights of Van')
+        plt.rcParams['figure.figsize'] = (50, 50)
+        plt.rcParams['font.size'] = 55
+        plt.title('Map Graph with Weights as Edge Labels')
 
-        nx.draw(self.graph, node_color=self.color_map, with_labels=True, node_size=1200, font_size=25)
-        pos = nx.spring_layout(self.route.G)
+        node_labels = nx.get_node_attributes(self.route.G, 'type')
+        edge_labels = nx.get_edge_attributes(self.route.G, 'weight')
+        pos = nx.spring_layout(self.route.G, seed=seed_num)
 
-        edge_labels = nx.get_edge_attributes(self.route.G, 'weight_van')
-        nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels, font_size=25)
-        # edge_labels_2 = nx.get_edge_attributes(self.route.G, 'weight_van')
-        # nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels_2)
+        nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels, font_size=30)
+        nx.draw_networkx_labels(self.route.G, pos, labels=node_labels, font_size=30)
 
+        nx.draw(self.graph, node_color=self.color_map, pos=pos, with_labels=False, node_size=1500, font_size=30)
         plt.savefig(graph_url)
         plt.close()
 
@@ -120,9 +97,12 @@ class Solution:
         :return: the dictionary of the "non fly zone" constrains
         """
         temp = nx.get_node_attributes(self.route.G, name='non_fly_zone')
-        self.weights_adj_matrix()
-        a_temp = self.dro_weight_matrix[1]
-        [self.non_fly_zone.update({j: True}) if temp[j] else self.non_fly_zone.update({i: False}) for i in a_temp for j in temp]
+
+        for i in self.nodes_oder:
+            self.non_fly_zone.update({i: False})
+            for j in temp:
+                if i==j:
+                    self.non_fly_zone.update({i: temp[j]})
         return self.non_fly_zone
 
     def demand_constrs(self):
@@ -130,44 +110,42 @@ class Solution:
         return customer demand in a sequence of nodes in the weight matrix of the drones and van
         :return: the dictionary of the customer demand
         """
-        # temp = nx.get_node_attributes(self.route.G, name='demand')
-        # self.weights_adj_matrix()
-        # a_temp = self.dro_weight_matrix[1]
-        # [self.customer_demand.update({i: temp[j]}) if i == j else self.customer_demand.update({i: 0})
-        #  for i in a_temp for j in temp]
-        # return self.customer_demand
+        temp = nx.get_node_attributes(self.route.G, name='demand')  # get a demand of customer nodes, in a length of 14
+
+        for i in self.nodes_oder:
+            self.customer_demand.update({i:0})
+            for j in temp:
+                if i==j:
+                    self.customer_demand.update({i: temp[j]})
+        return self.customer_demand
 
     def dro_connection_constrs(self):
-        nx.attr_matrix(self.route.G, edge_attr='weight_van')
-        self.dro_connection_matrix = nx.attr_matrix(self.graph, edge_attr='veh_dro')
-        print(self.dro_connection_matrix)
+        # nx.attr_matrix(self.route.G, edge_attr='weight')
+        self.dro_connection_matrix = nx.attr_matrix(self.graph, edge_attr='weight', rc_order=self.nodes_oder)
+        # print(self.dro_connection_matrix)
+        print("node order of the matrix: ", self.nodes_oder)
+        return self.dro_connection_matrix
 
     def weight_matrix_fn(self):
-        self.dro_weight_matrix = nx.attr_matrix(self.route.G, edge_attr='weight_dro', rc_order=self.nodes_oder)
-        self.van_weight_matrix = nx.attr_matrix(self.route.G, edge_attr='weight_van', rc_order=self.nodes_oder)
-        print(self.van_weight_matrix, '\n', len(self.van_weight_matrix))
-
-
-# generate solution matrix
-    def weights_adj_matrix(self):
         """
-        generate weights and adjacency matrix of the graph
-        :return: 1
+        generate the weight matrix with a form of DataFrame
+        :return: the weight of the matrix
         """
-        # from pandas import DataFrame
-        # self.adj_matrix = DataFrame(nx.adjacency_matrix(self.graph, nodelist=self.graph.nodes()).todense(),
-        #                            columns=self.graph.nodes(), index=self.graph.nodes())
+        self.weight_matrix = nx.to_pandas_adjacency(self.route.G, nodelist=self.graph.nodes())
+        return self.weight_matrix
 
-        # self.adj_matrix = nx.adjacency_matrix(self.graph).todense()
-        self.adj_matrix = nx.adjacency_matrix(self.graph)
-
-        self.van_weight_matrix = nx.attr_matrix(self.route.G, edge_attr='weight_van')
-        self.dro_weight_matrix = nx.attr_matrix(self.route.G, edge_attr='weight_dro')
-        # print("adjacency matrix: \n", self.adj_matrix)
-        # print("type of the matrix: ", type(self.dro_weight_matrix))
-        # print(self.dro_weight_matrix[0])
-        # print("name of nodes: ", self.dro_weight_matrix[1])
-        return 1
+    # generate solution matrix
+    def adjacency_matrix(self):
+        """
+        adjacency matrix of the graph
+        :return: connection matrix of the nodes
+        """
+        self.weight_matrix_fn()
+        for i in self.adj_matrix.index:
+            for j in self.adj_matrix.columns:
+                if self.adj_matrix.at[i, j] != 0.0:
+                    self.adj_matrix.at[i, j] = 1
+        return self.adj_matrix
 
     def generate_solution_matrix_randomly(self):
         """
@@ -183,17 +161,20 @@ class Solution:
 
 
 initial_solution = Solution()
-
+#initial_solution.plot_graph_Weight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\map_graph.png')
 # ---initiate the related parameters to generate solution matrices
-
+# initial_solution.weight_matrix_fn()
+initial_solution.non_fly_zone_constrs()
 # initial_solution.weights_adj_matrix()
 # ------generate matrix randomly
-solution_van, solution_drones = initial_solution.generate_solution_matrix_randomly()
+# solution_van, solution_drones = initial_solution.generate_solution_matrix_randomly()
 
 # initial_solution.weights_adj_matrix()
-initial_solution.non_fly_zone_constrs()
-# initial_solution.route.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\randomly_map_graph.png', initial_solution.color_map)
-#
+# initial_solution.non_fly_zone_constrs()
+# print("The weight of drone matrix: \n", initial_solution.dro_weight_matrix)
+# print("The weight of van matrix: \n", initial_solution.van_weight_matrix)
+# # initial_solution.route.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\randomly_map_graph.png', initial_solution.color_map)
+# #
 # initial_solution.plot_graph_droWeight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\randomly_map_graph_dro.png')  # plot the complete graph
 # initial_solution.plot_graph_vanWeight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\randomly_map_graph_van.png')
-# ------whether the solution satisfy the requirements
+# # ------whether the solution satisfy the requirements

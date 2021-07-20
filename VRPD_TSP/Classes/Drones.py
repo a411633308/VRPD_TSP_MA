@@ -5,10 +5,10 @@ from Classes.Packages import Packages
 from Classes.Batteries import Batteries
 import random
 import math
-from Classes.PARAMs import rate_load_range_drone, rate_load_pack_drone
+from Classes.PARAMs import rate_load_range_drone, rate_load_pack_drone, flying_range_drone
 
 class Drones:
-    def __init__(self, flying_range: int = 65):
+    def __init__(self, flying_range: int = flying_range_drone):
         """
         The drone node.
         :param flying_range: maximum flying range of the drone
@@ -67,6 +67,13 @@ class Drones:
         pack_index = [i for i in range(len(self.package)) if self.package[i].index == cu_needs]
         self.package_delivered.append(cu_needs)
         self.package.pop(pack_index[0])
+        self.left_packages: int = len(self.package)
+        self.battery.left_ba_sta = (self.battery.left_ba_sta - w) * (1 + rate_load_pack_drone)
+        self. sum_energy_consumption(w)
+        return 1
+
+    def deliver(self, w: float):
+        self.package.pop(0)
         self.left_packages: int = len(self.package)
         self.battery.left_ba_sta = (self.battery.left_ba_sta - w) * (1 + rate_load_pack_drone)
         self. sum_energy_consumption(w)
