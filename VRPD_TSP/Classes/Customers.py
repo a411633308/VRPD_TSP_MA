@@ -1,20 +1,24 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import uuid
-
+import random
 
 class Customers:
-    def __init__(self, pack_needs: int = 1, non_flying: bool = False):
+    def __init__(self, pack_needs: int = 1, non_flying: bool = False,
+                 longtitude: int = random.sample(range(20, 50), 1), latitude: int = random.sample(range(50, 100), 1)):
         """
         Customer
         :param param: dict,'pack_needs','non_flying'.
         """
 
         self.index = "cus_"+str(uuid.uuid1())[:10]
+        self.type = "customers"
         self.pack_needs: int = pack_needs
         self.required_pack_list: list[str] = list()
         self.served: bool = False
         self.in_non_flying: bool = non_flying
+        self.long: int = longtitude
+        self.lat: int = latitude
 
     def __index__(self):
         return self.index

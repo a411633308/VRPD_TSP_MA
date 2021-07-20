@@ -7,8 +7,10 @@ from Classes.Docking_hubs import Docking_hubs
 from Classes.Customers import Customers
 
 import numpy as np
+import random
 from random import choice
-from Classes.PARAMs import max_bat_num_dockhub, flying_range_drone, customer_needs, dockhub_num, depot_num, customer_num
+from Classes.PARAMs import seed_num, max_bat_num_dockhub, max_pack_num_dockhub, \
+    flying_range_drone, customer_needs, dockhub_num, depot_num, customer_num
 # import matplotlib.pyplot as plt
 
 class Routes:
@@ -20,6 +22,7 @@ class Routes:
         :param drone_fly_range: int, the maximum flying range of drone
         :param cust_needs: parameter for initiating class Customers
         """
+        random.seed(seed_num)
         self.nodes_docking_hubs: list[Docking_hubs] = list()  # lists for nodes of docking hubs
         self.nodes_depot: list[Depot] = list()  # list for depots nodes
         self.nodes_graph: list = list()  # list for graph nodes
@@ -32,6 +35,8 @@ class Routes:
         self.color_map: list[str] = list()
         self.G = nx.Graph()
 
+        self.fix_position: dict = dict()
+
     def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
         """
         init sequence of nodes for a graph
@@ -43,7 +48,10 @@ class Routes:
         self.nodes_docking_hubs = [Docking_hubs(self.bat_num_dock, self.flying_range)
                                    for i in range(dckh_num)]
         self.nodes_depot = [Depot() for i in range(dep_num)]
-        self.nodes_customers = [Customers(self.params_cust[0], self.params_cust[1])
+        import random
+        long: list = random.sample(range(0, 50), cus_num*2)
+        self.nodes_customers = [Customers(self.params_cust[0], self.params_cust[1],
+                                          longtitude= long[i], latitude= long[-i])
                                 for i in range(cus_num)]
 
         # list that contains the customers and docking hubs' nodes
@@ -58,10 +66,35 @@ class Routes:
         [self.nodes_graph.append(b[i]) for i in range(len(b))]
         # customers and docking hubs nodes shuffled as a new element
 
-        z = [str(self.nodes_graph[i].index) for i in range(len(self.nodes_graph))]
-        [self.G.add_node(i, type=i[:3]) for i in z]
-        [self.G.add_edge(i, j) for i in z for j in list(set(z)-{i})]
+        z = [self.nodes_graph[i].index for i in range(len(self.nodes_graph))]
+
+        # self.G.add_node(self.nodes_depot[0])
+        # [print(i.type) for i in self.nodes_graph[1:]]
+        # self.G.add_nodes_from(self.nodes_graph[1:])
+        [self.G.add_node(z[i], type=self.nodes_graph[i].type, long=self.nodes_graph[i].long,
+                         lat=self.nodes_graph[i].lat) for i in range(len(z))]
+        [self.fix_position.update({self.nodes_graph[i].index:
+                                       [self.nodes_graph[i].long,
+                                        self.nodes_graph[i].lat]})
+         for i in range(len(z))]
+
+        for i in range(len(z)*3):
+            a = random.choice(z)
+            b = random.choice(z)
+            if a != b:
+                self.G.add_edge(a, b)
         return self.G
+
+    def plot_map(self, graph_url: str, color_map):
+        import matplotlib.pyplot as plt
+        plt.rcParams['figure.figsize'] = (40, 40)
+        plt.rcParams['font.size'] = 50
+        plt.title('Connection Map Graph')
+        pos = nx.spring_layout(self.G, pos=self.fix_position)
+        nx.draw(self.G, node_color=color_map, with_labels=True, node_size=1200, font_size=25)
+
+        plt.savefig(graph_url)
+        plt.close()
 
     def set_non_flying(self, non_fly_num: int):
         """
@@ -75,27 +108,40 @@ class Routes:
         [self.nodes_customers[i].live_in_non_flying(True) for i in customers_indexes]
         return customers_indexes
 
-    def set_color_weights_type(self, colors, weights):
+    def set_color_weights_type(self, colors):
         for n, nbrs in self.G.adj.items():
-            i: int = 0
             if n[:3] == 'cus':
                 self.color_map.append(colors[0])
+                cus_node: Customers = self.find_customers(n)
+                if type(cus_node) == type(self.nodes_customers[0]):
+                    self.G.nodes[n]['non_fly_zone'] = cus_node.in_non_flying
+                    self.G.nodes[n]['demand'] = cus_node.pack_needs # default as 1, but actually need to recall with searching function
             elif n[:3] == 'dep':
                 self.color_map.append(colors[1])
+                for nbr, eattr in nbrs.items():
+                    eattr['van_dro_set'] = 1
             else:
                 self.color_map.append(colors[2])
+                self.G.nodes[n]['max_ba'] = max_bat_num_dockhub
+                self.G.nodes[n]['max_pa'] = max_pack_num_dockhub
 
             for nbr, eattr in nbrs.items():
-                eattr['weight_dro'] = round(weights[0][i], 3)
-                eattr['weight_van'] = round(weights[1][i], 3)
+                eattr['weight_dro'] = round(random.random() * random.uniform(0, 50), 3)
+                eattr['weight_van'] = round(random.random() * random.uniform(0, 50), 3)
                 if eattr['weight_dro'] < eattr['weight_van']:
-                    eattr['veh_type'] = 'drone'
+                    eattr['veh_dro'] = 1
                 else:
-                    eattr['veh_type'] = 'van'
-                i = i+1
+                    eattr['veh_van'] = 1
         return self.color_map
     # It's still short of graph with specific font size and format
 
+    def find_customers(self, cus_index: str):
+        found_index = [i for i in range(len(self.nodes_customers))
+                       if self.nodes_customers[i].index==cus_index]
+        if len(found_index)>0:
+            return self.nodes_customers[found_index[0]]
+        else:
+            return ValueError
 #
 # bat_num: int = 20
 # fly_range: int = 236
@@ -118,3 +164,10 @@ class Routes:
 # color_map = route.set_color_weights_type(['skyblue', 'red', 'orange'],[drones_weights, van_weights])
 # nx.draw(graph, node_color=color_map, with_labels=False)
 # plt.show()
+
+
+# route = Routes()
+# nodes_list = route.init_graph_nodes()
+# print(nodes_list)
+# route.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\randomly_map_graph.png')
+

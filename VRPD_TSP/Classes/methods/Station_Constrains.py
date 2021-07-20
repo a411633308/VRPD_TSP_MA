@@ -71,5 +71,3 @@ class Depot_Constrains(Constrains):
         self.resources.collect_overall_resources(self.vehicle.minivan, self.vehicle.drones,
                                                  self.docking_hubs)
 
-
-depot_constrains = Depot_Constrains()
