@@ -6,6 +6,7 @@ import random
 
 import networkx as nx
 import numpy as np
+from pandas import DataFrame
 import matplotlib.pyplot as plt
 from Classes.PARAMs import color_list, seed_num, graph_params_list, route_params_list, non_fly_num
 from Classes.PARAMs import customer_num, dockhub_num, drones_num_on_van, rate_load_pack_drone, rate_load_pack_van
@@ -29,8 +30,8 @@ class GRB_Var_Constrs:
         self.adj_matrix: any = None
         self.weight_matrix: any = None
         # self.van_weight_matrix: any = None
-        self.solution_matrix_drones: list = list()
-        self.solution_matrix_van: bytearray = None
+        self.solution_matrix_drones: list[DataFrame] = list()
+        self.solution_matrix_van: DataFrame = None
 
         # ------------initiate route and graph automatically--------------------------------
         self.route: Routes = Routes(bat_dock_num=self.route_params_list[0], drone_fly_range=self.route_params_list[1],
@@ -71,7 +72,16 @@ class GRB_Var_Constrs:
         self.van_rate_load_matrix: any
 
         # ------------ the number of drone and van that have intersections ---------------
-        self.intersection_numbers: list = list()
+        self.battery_intersections: list = list()
+
+        # ------------ initiation of variables and constrains ----------------------------
+        self.weight_matrix_fn()
+        self.generate_solution_matrix()
+        self.non_fly_zone_constrs()
+        self.demand_constrs()
+        self.load_rate_matrix_fn()
+        self.adjacency_matrix()
+        self.get_battery_backup(self.solution_matrix_van, self.solution_matrix_drones)
 
     def plot_graph_Weight(self, graph_url: str):
         """
@@ -96,7 +106,7 @@ class GRB_Var_Constrs:
         plt.savefig(graph_url)
         plt.close()
 
-    def non_fly_zone_constrs(self):
+    def non_fly_zone_constrs(self): # not in the same oder as self.nodes_order
         """
         return whether the customers live in a "non fly zone" in a sequence of nodes in the weight matrix of the drones and van
         :return: the dictionary of the "non fly zone" constrains
@@ -113,7 +123,7 @@ class GRB_Var_Constrs:
         for i in self.non_fly_zone]
         return self.non_fly_zone
 
-    def demand_constrs(self):
+    def demand_constrs(self):  # not in the same oder as self.nodes_order
         """
         return customer demand in a sequence of nodes in the weight matrix of the drones and van
         :return: the dictionary of the customer demand
@@ -125,6 +135,7 @@ class GRB_Var_Constrs:
             for j in temp:
                 if i==j:
                     self.customer_demand.update({i: temp[j]})
+
         return self.customer_demand
 
     # def dro_connection_constrs(self):
@@ -151,11 +162,11 @@ class GRB_Var_Constrs:
 
         # generate rate matrix of the load and energy for the drone
         temp = np.repeat(1-rate_load_pack_drone, shape*shape)
-        self.dro_rate_load_matrix = temp.reshape([shape, shape])
+        self.dro_rate_load_matrix = DataFrame(temp.reshape([shape, shape]), columns=self.nodes_oder, index=self.nodes_oder)
 
         # generate rate matrix of the load and energy for the drone
         temp = np.repeat(1-rate_load_pack_van, shape*shape)
-        self.van_rate_load_matrix = temp.reshape([shape, shape])
+        self.van_rate_load_matrix = DataFrame(temp.reshape([shape, shape]), columns=self.nodes_oder, index=self.nodes_oder)
 
         return self.dro_rate_load_matrix, self.van_rate_load_matrix
 
@@ -176,45 +187,75 @@ class GRB_Var_Constrs:
         #  for i in range(len(self.adj_matrix)) for j in range(len(self.adj_matrix))]  # whether the matrix is symmetric or not
         return self.adj_matrix
 
-    def get_intersection_dro_van(self, solution_matrix_van, solution_matrix_drones):
+    def get_battery_backup(self, solution_matrix_van, solution_matrix_drones):
         """
-        the intersection nodes that are covered by both drone and van
+        1. the intersection nodes that are covered by both drone and van
+        2. the routes that contains a docking hub node that are covered by drones
         :param solution_matrix_van: the matrix of van
         :param solution_matrix_drones: the list of matrixes for drones
         :return: the list of intersection nodes for the drone and van
         """
+        # ------------ battery backup from van -------------------------------------------
         intersection_matrix: list = list()
+        a: list = list()
+        b: list = list()
+
         for n in range(drones_num_on_van):  # there are at least two drones in the network
             # whether the drone and van have covered the same node
-            c = [1 for i in range(solution_matrix_van.shape[0]) for j in range(solution_matrix_van.shape[1])
-                 if solution_matrix_van[i, j] == solution_matrix_drones[n][i, j] and solution_matrix_van[i,j] == 1]
+            c = [1 if solution_matrix_van.at[i, j] == solution_matrix_drones[n].at[i, j] and solution_matrix_van.at[i,j] == 1
+                 else 0 for i in solution_matrix_van.index for j in solution_matrix_van.columns]
+
+            # for j in solution_matrix_van.index:
+            #     for i in solution_matrix_van.columns:
+            #         if solution_matrix_van.at[i, j] == solution_matrix_drones[n].at[i, j] and solution_matrix_van.at[i, j] == 1:
+            #             print(1)
+                    #print("van solution: \n", solution_matrix_van.at[i, j], "\n drone solution: \n", solution_matrix_drones[n].at[i, j])
+
             intersection_matrix.append(c)
 
         # sum the number of intersection nodes between (drone_1 and van, drone_2 and van)
-        [self.intersection_numbers.append(sum(i)) for i in intersection_matrix]
+        [a.append(sum(i)) for i in intersection_matrix]
+
+        # ------------ battery backup from docking hubs -----------------------------------
+        # ------------ adjacency matrix that is only related to docking hubs --------------
+        d = self.adj_matrix # initiation matrix that
+        for i in self.adj_matrix.index:
+            for j in self.adj_matrix.columns:
+                if self.adj_matrix.at[i, j] == 1 and (i[:3] == "doc" or j[:3] == "doc"):
+                    d.at[i, j] = 1
+                else:
+                    d.at[i, j] = 0
+
+        intersection_matrix: list = list()
+        for n in range(drones_num_on_van):  # there are at least two drones in the network
+            # whether the drone and van have covered the same node
+            c = [1 if d.at[i, j] == solution_matrix_drones[n].at[i, j] and d.at[i,j] == 1
+                 else 0 for i in d.index for j in d.columns]
+
+            intersection_matrix.append(c)
+
+        # sum the number of intersection nodes between (drone_1 and van, drone_2 and van)
+        [b.append(sum(i)) for i in intersection_matrix]
+
+        intersection_matrix: list = list()
+        [intersection_matrix.append(a[i] + b[i]) for i in range(len(a))]
+
+        self.battery_intersections = sum(intersection_matrix)
         return intersection_matrix
+
+    # def get_package_backup(self):
 
     def generate_solution_matrix(self):
         """
         generate the solution matrix of the drones and van
         :return: a list: [solution matrix for the van, solution matrixes for the drones on the van]
         """
+        import pandas as pd
         shape = len(self.graph.nodes())
-        self.solution_matrix_van = np.zeros([shape, shape])
-        [self.solution_matrix_drones.append(np.zeros([shape, shape])) for i in range(drones_num_on_van)]
-
+        self.solution_matrix_van = pd.DataFrame(np.zeros([shape, shape]), columns=self.nodes_oder, index=self.nodes_oder)
+        [self.solution_matrix_drones.append(pd.DataFrame(np.zeros([shape, shape]), columns=self.nodes_oder, index=self.nodes_oder))
+         for i in range(drones_num_on_van)]
         return self.solution_matrix_van, self.solution_matrix_drones
 
 
 initial_solution = GRB_Var_Constrs()
-#initial_solution.plot_graph_Weight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\map_graph.png')
-# ---initiate the related parameters to generate solution matrices
-# initial_solution.weight_matrix_fn()
-# # ------generate matrix randomly
-# a, b = initial_solution.generate_solution_matrix()
-# adj_matrix = initial_solution.adjacency_matrix()
-# print(adj_matrix.shape, '\n', adj_matrix)
-# # initial_solution.weights_adj_matrix()
-# initial_solution.non_fly_zone_constrs()
-# initial_solution.load_rate_matrix_fn()
-# initial_solution.get_intersection_dro_van( param_matrix1, matrix_list2)

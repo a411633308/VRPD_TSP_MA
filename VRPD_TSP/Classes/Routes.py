@@ -37,6 +37,9 @@ class Routes:
 
         self.fix_position: dict = dict()
 
+        self.init_graph_nodes()
+
+
     def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
         """
         init sequence of nodes for a graph
