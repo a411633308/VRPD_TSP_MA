@@ -186,8 +186,8 @@ class GRB_Var_Constrs:
         intersection_matrix: list = list()
         for n in range(drones_num_on_van):  # there are at least two drones in the network
             # whether the drone and van have covered the same node
-            c = [1 for i in range(a.shape[0]) for j in range(a.shape[1])
-                 if solution_matrix_van[i, j] == solution_matrix_drones[n][i, j] and a[i,j] == 1]
+            c = [1 for i in range(solution_matrix_van.shape[0]) for j in range(solution_matrix_van.shape[1])
+                 if solution_matrix_van[i, j] == solution_matrix_drones[n][i, j] and solution_matrix_van[i,j] == 1]
             intersection_matrix.append(c)
 
         # sum the number of intersection nodes between (drone_1 and van, drone_2 and van)
@@ -210,11 +210,11 @@ initial_solution = GRB_Var_Constrs()
 #initial_solution.plot_graph_Weight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\map_graph.png')
 # ---initiate the related parameters to generate solution matrices
 # initial_solution.weight_matrix_fn()
-# ------generate matrix randomly
-a, b = initial_solution.generate_solution_matrix()
-adj_matrix = initial_solution.adjacency_matrix()
+# # ------generate matrix randomly
+# a, b = initial_solution.generate_solution_matrix()
+# adj_matrix = initial_solution.adjacency_matrix()
 # print(adj_matrix.shape, '\n', adj_matrix)
-# initial_solution.weights_adj_matrix()
-initial_solution.non_fly_zone_constrs()
-initial_solution.load_rate_matrix_fn()
-initial_solution.get_intersection_dro_van()
+# # initial_solution.weights_adj_matrix()
+# initial_solution.non_fly_zone_constrs()
+# initial_solution.load_rate_matrix_fn()
+# initial_solution.get_intersection_dro_van( param_matrix1, matrix_list2)
