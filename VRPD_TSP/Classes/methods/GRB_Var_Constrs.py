@@ -36,8 +36,7 @@ class GRB_Var_Constrs:
         # ------------initiate route and graph automatically--------------------------------
         self.route: Routes = Routes(bat_dock_num=self.route_params_list[0], drone_fly_range=self.route_params_list[1],
                                     cust_needs=self.route_params_list[2])
-        self.graph = self.route.init_graph_nodes(dckh_num=self.graph_params_list[0], dep_num=self.graph_params_list[1],
-                                                 cus_num=self.graph_params_list[2])
+        self.graph = self.route.G
         # set several customers live in a "non flying range."
         self.route.set_non_flying(self.non_flying_num)
         # length of nodes exists in the graph
@@ -59,7 +58,7 @@ class GRB_Var_Constrs:
         self.van_weight_matrix: any
         # ------------generate weights of drones and vans randomly------------------------
 
-        self.color_map = self.route.set_color_weights_type(color_list)
+        #self.color_map = self.route.set_color_weights_type(color_list)
         self.graph = self.route.G
 
         # ------------ variables for the Gurobi ------------------------------------------
@@ -75,6 +74,7 @@ class GRB_Var_Constrs:
         self.battery_intersections: list = list()
 
         # ------------ initiation of variables and constrains ----------------------------
+        self.plot_graph_Weight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph_with_weight.png')
         self.weight_matrix_fn()
         self.generate_solution_matrix()
         self.non_fly_zone_constrs()
@@ -89,20 +89,18 @@ class GRB_Var_Constrs:
         :param graph_url: the url address to save the iamge
         :return: none
         """
-        # print("edges and nodes numbers: ",self.graph.number_of_edges(),
-        #       self.graph.number_of_nodes())
-        plt.rcParams['figure.figsize'] = (50, 50)
+        plt.rcParams['figure.figsize'] = (60, 60)
         plt.rcParams['font.size'] = 55
         plt.title('Map Graph with Weights as Edge Labels')
 
         node_labels = nx.get_node_attributes(self.route.G, 'type')
         edge_labels = nx.get_edge_attributes(self.route.G, 'weight')
+
         pos = nx.spring_layout(self.route.G, seed=seed_num)
+        nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels, font_size=35)
+        nx.draw_networkx_labels(self.route.G, pos, labels=node_labels, font_size=35)
+        nx.draw(self.graph, node_color=self.route.color_map, pos=pos, with_labels=False, node_size=1500, font_size=35)
 
-        nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels, font_size=30)
-        nx.draw_networkx_labels(self.route.G, pos, labels=node_labels, font_size=30)
-
-        nx.draw(self.graph, node_color=self.color_map, pos=pos, with_labels=False, node_size=1500, font_size=30)
         plt.savefig(graph_url)
         plt.close()
 
@@ -189,11 +187,12 @@ class GRB_Var_Constrs:
 
     def get_battery_backup(self, solution_matrix_van, solution_matrix_drones):
         """
+        get batteries backup for the drones
         1. the intersection nodes that are covered by both drone and van
         2. the routes that contains a docking hub node that are covered by drones
         :param solution_matrix_van: the matrix of van
         :param solution_matrix_drones: the list of matrixes for drones
-        :return: the list of intersection nodes for the drone and van
+        :return: the numbers of drones can change their batteries
         """
         # ------------ battery backup from van -------------------------------------------
         intersection_matrix: list = list()
@@ -243,7 +242,28 @@ class GRB_Var_Constrs:
         self.battery_intersections = sum(intersection_matrix)
         return intersection_matrix
 
-    # def get_package_backup(self):
+    def get_package_backup(self, solution_matrix_drones):
+        """
+        get the packages backup for the
+        :param solution_matrix_drones:
+        :return:
+        """
+        # ------------ adjacency matrix that is only related to docking hubs --------------
+        d = self.adj_matrix # initiation matrix that
+        for i in self.adj_matrix.index:
+            for j in self.adj_matrix.columns:
+                if self.adj_matrix.at[i, j] == 1 and (i[:3] == "doc" or j[:3] == "doc"):
+                    d.at[i, j] = 1
+                else:
+                    d.at[i, j] = 0
+
+        intersection_matrix: list = list()
+        for n in range(drones_num_on_van):  # there are at least two drones in the network
+            # whether the drone and van have covered the same node
+            c = [1 if d.at[i, j] == solution_matrix_drones[n].at[i, j] and d.at[i,j] == 1
+                 else 0 for i in d.index for j in d.columns]
+
+            intersection_matrix.append(c)
 
     def generate_solution_matrix(self):
         """

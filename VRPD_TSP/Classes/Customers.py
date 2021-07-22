@@ -5,7 +5,8 @@ import random
 
 class Customers:
     def __init__(self, pack_needs: int = 1, non_flying: bool = False,
-                 longtitude: int = random.sample(range(20, 50), 1), latitude: int = random.sample(range(50, 100), 1)):
+                 longtitude: int = random.sample(range(10, 50), random.randint(0, len(range(10, 50)))),
+                 latitude: int = random.sample(range(20, 60), random.randint(0, len(range(50, 80))))):
         """
         Customer
         :param param: dict,'pack_needs','non_flying'.

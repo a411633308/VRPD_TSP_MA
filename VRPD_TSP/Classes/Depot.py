@@ -4,7 +4,8 @@ import uuid
 import random
 
 class Depot:
-    def __init__(self, longtitue: int = random.sample(range(20, 40), 1), latitude: int = random.sample(range(40, 60), 1)):
+    def __init__(self, longtitue: int = random.sample(range(10, 50), 1),
+                 latitude: int = random.sample(range(20, 60), 1)):
         self.index: str = "dep_"+str(uuid.uuid1())[:10]
         self.type: str = "depot"
         self.long: int = longtitue[0]

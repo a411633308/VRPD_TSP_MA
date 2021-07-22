@@ -10,7 +10,7 @@ import numpy as np
 import random
 from random import choice
 from Classes.PARAMs import seed_num, max_bat_num_dockhub, max_pack_num_dockhub, \
-    flying_range_drone, customer_needs, dockhub_num, depot_num, customer_num
+    flying_range_drone, customer_needs, dockhub_num, depot_num, customer_num, color_list
 # import matplotlib.pyplot as plt
 
 class Routes:
@@ -38,7 +38,9 @@ class Routes:
         self.fix_position: dict = dict()
 
         self.init_graph_nodes()
+        self.set_color_weights_type(color_list)
 
+        self.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph.png')
 
     def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
         """
@@ -52,7 +54,7 @@ class Routes:
                                    for i in range(dckh_num)]
         self.nodes_depot = [Depot() for i in range(dep_num)]
         import random
-        long: list = random.sample(range(0, 50), cus_num*2)
+        long: list = random.sample(range(0, cus_num*cus_num), cus_num*2)
         self.nodes_customers = [Customers(self.params_cust[0], self.params_cust[1],
                                           longtitude= long[i], latitude= long[-i])
                                 for i in range(cus_num)]
@@ -65,37 +67,42 @@ class Routes:
         # random shuffles the order of elements in the list
         # the result from shuffle() will not be saved
         b = np.random.permutation(a)
+        self.G = nx.Graph()
+
+        self.nodes_graph = list()
         self.nodes_graph.append(choice(self.nodes_depot))
         [self.nodes_graph.append(b[i]) for i in range(len(b))]
+
         # customers and docking hubs nodes shuffled as a new element
-
         z = [self.nodes_graph[i].index for i in range(len(self.nodes_graph))]
-
         # self.G.add_node(self.nodes_depot[0])
         # [print(i.type) for i in self.nodes_graph[1:]]
         # self.G.add_nodes_from(self.nodes_graph[1:])
         [self.G.add_node(z[i], type=self.nodes_graph[i].type, long=self.nodes_graph[i].long,
                          lat=self.nodes_graph[i].lat) for i in range(len(z))]
+
+        self.fix_position: dict = dict()
         [self.fix_position.update({self.nodes_graph[i].index:
                                        [self.nodes_graph[i].long,
                                         self.nodes_graph[i].lat]})
          for i in range(len(z))]
+
 
         for i in range(len(z)*3):
             a = random.choice(z)
             b = random.choice(z)
             if a != b:
                 self.G.add_edge(a, b)
+
         return self.G
 
-    def plot_map(self, graph_url: str, color_map):
+    def plot_map(self, graph_url: str):
         import matplotlib.pyplot as plt
         plt.rcParams['figure.figsize'] = (40, 40)
         plt.rcParams['font.size'] = 50
         plt.title('Connection Map Graph')
-        pos = nx.spring_layout(self.G, pos=self.fix_position)
-        nx.draw(self.G, node_color=color_map, with_labels=True, node_size=1200, font_size=25)
-
+        pos = nx.spring_layout(self.G,  seed=seed_num)
+        nx.draw(self.G, node_color=self.color_map, with_labels=True, node_size=1200, font_size=25)
         plt.savefig(graph_url)
         plt.close()
 
@@ -125,7 +132,7 @@ class Routes:
                 self.color_map.append(colors[1])
                 for nbr, eattr in nbrs.items():
                     eattr['van_dro_set'] = 1
-            else:
+            elif n[:3] == "doc":
                 self.G.nodes[n]['type'] = 'docking hub'
                 self.color_map.append(colors[2])
                 self.G.nodes[n]['max_ba'] = max_bat_num_dockhub
@@ -137,15 +144,11 @@ class Routes:
                 import numpy as np
                 vec1 = np.array([node_1.lat, node_1.long])
                 vec2 = np.array([node_2.lat, node_2.long])
-                distance_1 = round(np.linalg.norm(vec1-vec2))
-                # distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))
-                eattr['weight'] = distance_1
-                # round(random.random() * random.uniform(0, 50), 3)
-                # eattr['weight_van'] = round(random.random() * random.uniform(0, 50), 3)
-                # if eattr['weight_dro'] < eattr['weight_van']:
-                #     eattr['veh_dro'] = 1
-                # else:
-                #     eattr['veh_van'] = 1
+                #distance_1 = round(np.linalg.norm(vec1-vec2))
+                distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))/13
+                eattr['weight'] = round(distance_1, 2)
+
+
         return self.color_map
     # It's still short of graph with specific font size and format
 
@@ -155,6 +158,7 @@ class Routes:
         if len(found_index)>0:
             return self.nodes_graph[found_index[0]]
         else:
+            print(2)
             return ValueError
 #
 # bat_num: int = 20
@@ -183,5 +187,4 @@ class Routes:
 # route = Routes()
 # nodes_list = route.init_graph_nodes()
 # print(nodes_list)
-# route.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th\randomly_map_graph.png')
 

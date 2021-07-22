@@ -9,7 +9,7 @@ import random
 class Docking_hubs:
     def __init__(self, num: int = max_bat_num_dockhub, flying_range: int = flying_range_drone,
                  stock_packages: int = max_pack_num_dockhub,
-                 longtitude: int = random.sample(range(30, 60), 1), latitude: int = random.sample(range(60, 90), 5)):
+                 longtitude: int = random.sample(range(10, 50), 1), latitude: int = random.sample(range(20, 60), 5)):
         """
         Docking hub nodes, which has default packages number 20 packages
         :param num: the number of batteries can be saved in this docking hub.
