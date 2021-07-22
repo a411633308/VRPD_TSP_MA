@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 from Classes.Routes import Routes
-import random
 
 import networkx as nx
 import numpy as np
@@ -10,7 +9,7 @@ from pandas import DataFrame
 import matplotlib.pyplot as plt
 from Classes.PARAMs import color_list, seed_num, graph_params_list, route_params_list, non_fly_num
 from Classes.PARAMs import customer_num, dockhub_num, drones_num_on_van, rate_load_pack_drone, rate_load_pack_van
-
+from Classes.Weather import Weather
 
 class GRB_Var_Constrs:
     def __init__(self, route_params: list = route_params_list, non_fly_num: int = non_fly_num,
@@ -54,27 +53,33 @@ class GRB_Var_Constrs:
         # [self.weights.append(round(random.random() * random.uniform(0, 100), 3))
         #  for i in range(len(self.graph.edges()))]  # generate van weights
         # save to the relevant matrix
-        self.dro_weight_matrix: any
-        self.van_weight_matrix: any
-        # ------------generate weights of drones and vans randomly------------------------
 
-        #self.color_map = self.route.set_color_weights_type(color_list)
+        # ------------generate weights and related factor matrix of drones ----------------
+        self.dro_weight_matrix: DataFrame = DataFrame()
+        self.van_weight_matrix: DataFrame = DataFrame()
         self.graph = self.route.G
+        self.dro_rate_load_matrix: DataFrame = DataFrame()
+        self.van_rate_load_matrix: DataFrame = DataFrame()
+        self.weather: Weather = Weather()
+        self.weather_rate_matrix: DataFrame = DataFrame()
 
         # ------------ variables for the Gurobi ------------------------------------------
+        self.dro_connection_matrix: DataFrame = DataFrame()
+        self.van_connection_matrix: DataFrame = DataFrame()
+        self.nodes_oder = [self.route.nodes_graph[i].index for i in range(len(self.route.nodes_graph))]
+
+        # ------------ variables for constrains ------------------------------------------
+        self.dro_van_connections: list = list()
         self.customer_demand: dict = dict()
         self.non_fly_zone: dict = dict()
-        self.dro_connection_matrix: any
-        self.van_connection_matrix: any
-        self.nodes_oder = [self.route.nodes_graph[i].index for i in range(len(self.route.nodes_graph))]
-        self.dro_rate_load_matrix: any
-        self.van_rate_load_matrix: any
+        self.intersection_van_doc_num: int = 0  # the number of intersection nodes between van and docking hubs
+        self.intersection_dro_vanDoc_num: int = 0  # the number of intersection nodes between drones and (van and docking hubs)
 
         # ------------ the number of drone and van that have intersections ---------------
         self.battery_intersections: list = list()
 
         # ------------ initiation of variables and constrains ----------------------------
-        self.plot_graph_Weight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph_with_weight.png')
+        # self.plot_graph_weight(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph_with_weight.png')
         self.weight_matrix_fn()
         self.generate_solution_matrix()
         self.non_fly_zone_constrs()
@@ -82,8 +87,11 @@ class GRB_Var_Constrs:
         self.load_rate_matrix_fn()
         self.adjacency_matrix()
         self.get_battery_backup(self.solution_matrix_van, self.solution_matrix_drones)
+        self.get_package_backup(solution_matrix_van=self.solution_matrix_van,
+                                solution_matrix_drones=self.solution_matrix_drones)
+        self.weather_matrix_fn()
 
-    def plot_graph_Weight(self, graph_url: str):
+    def plot_graph_weight(self, graph_url: str):
         """
         plot the graph with van weight as label of the edge
         :param graph_url: the url address to save the iamge
@@ -151,6 +159,18 @@ class GRB_Var_Constrs:
         self.weight_matrix = nx.to_pandas_adjacency(self.route.G, nodelist=self.graph.nodes())
         return self.weight_matrix
 
+    def weather_matrix_fn(self):
+        """
+        the matrix of drones and van to effect the left energy and load weight.
+        :return: the rate of weight and load for the van and the drone
+        """
+        shape = len(self.graph.nodes())
+
+        # generate rate matrix of the weather
+        temp = np.repeat(1-self.weather.wind_speed, shape*shape)
+        self.weather_rate_matrix = DataFrame(temp.reshape([shape, shape]), columns=self.nodes_oder, index=self.nodes_oder)
+        return self.weather_rate_matrix
+
     def load_rate_matrix_fn(self):
         """
         the matrix of drones and van to effect the left energy and load weight.
@@ -214,6 +234,7 @@ class GRB_Var_Constrs:
 
         # sum the number of intersection nodes between (drone_1 and van, drone_2 and van)
         [a.append(sum(i)) for i in intersection_matrix]
+        self.dro_van_connections:list = a
 
         # ------------ battery backup from docking hubs -----------------------------------
         # ------------ adjacency matrix that is only related to docking hubs --------------
@@ -237,18 +258,26 @@ class GRB_Var_Constrs:
         [b.append(sum(i)) for i in intersection_matrix]
 
         intersection_matrix: list = list()
-        [intersection_matrix.append(a[i] + b[i]) for i in range(len(a))]
+        intersection_matrix.append(a)
+        intersection_matrix.append(b)
 
-        self.battery_intersections = sum(intersection_matrix)
-        return intersection_matrix
+        d: list = list()
+        [d.append(a[i] + b[i]) for i in range(len(a))]
 
-    def get_package_backup(self, solution_matrix_drones):
+        self.battery_intersections = intersection_matrix  # [intersection between van and drones, docking hubs and drones]
+
+        return sum(d)
+
+    def get_package_backup(self, solution_matrix_drones: list, solution_matrix_van):
         """
-        get the packages backup for the
+        get the packages backup for the van(with docking hubs) and drones(with vans and docking hubs)
         :param solution_matrix_drones:
-        :return:
+        :param solution_matrix_van:
+        :return: self.intersection_van_doc_num * max_pack_van = overall packages the van can deliver
+         self.intersection_dro_vanDoc_num * max_pack_dro = overall packages the drones can deliver
         """
-        # ------------ adjacency matrix that is only related to docking hubs --------------
+        # ------------ adjacency matrix that is only related to docking hubs ---------------------------
+        # ------------ d: the adjacency matrix that contains only the connection of docking hub nodes --
         d = self.adj_matrix # initiation matrix that
         for i in self.adj_matrix.index:
             for j in self.adj_matrix.columns:
@@ -257,13 +286,26 @@ class GRB_Var_Constrs:
                 else:
                     d.at[i, j] = 0
 
+        # ------------ intersection_matrix: the intersection nodes of drones and the d matrix ----------
         intersection_matrix: list = list()
         for n in range(drones_num_on_van):  # there are at least two drones in the network
             # whether the drone and van have covered the same node
-            c = [1 if d.at[i, j] == solution_matrix_drones[n].at[i, j] and d.at[i,j] == 1
+            c = [1 if d.at[i, j] == solution_matrix_drones[n].at[i, j] and d.at[i, j] == 1
                  else 0 for i in d.index for j in d.columns]
 
             intersection_matrix.append(c)
+        # ------------ a: numbers of intersection nodes for each drones and the d matrix ---------------
+        a: list = list()
+        [a.append(sum(intersection_matrix[i])) for i in range(len(intersection_matrix))]
+        # ------------ b: numbers of intersection nodes for each drones and the van --------------------
+        b: list = self.dro_van_connections
+        # self.intersection_dro_vanDoc: list = [a, b]
+        self.intersection_dro_vanDoc_num: int = sum([sum(a), sum(b)])
+        # ------------ b: numbers of intersection nodes for van and the d matrix -----------------------
+        c = [1 if d.at[i, j] == solution_matrix_van.at[i, j] and d.at[i, j] == 1
+             else 0 for i in d.index for j in d.columns]
+        self.intersection_van_doc_num: int = sum(c)
+        return self.intersection_van_doc_num, self.intersection_dro_vanDoc_num
 
     def generate_solution_matrix(self):
         """
@@ -278,4 +320,3 @@ class GRB_Var_Constrs:
         return self.solution_matrix_van, self.solution_matrix_drones
 
 
-initial_solution = GRB_Var_Constrs()

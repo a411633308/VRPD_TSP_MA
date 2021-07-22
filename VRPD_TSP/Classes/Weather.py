@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 import uuid
+from Classes.PARAMs import seed_num
+import random
 
 class Weather:
     def __init__(self):
@@ -8,7 +10,8 @@ class Weather:
         The weather effects the flying range of drone positively or negatively
         """
         self.suit:bool = True
-        self.wind_speed:int = 0
+        random.seed(seed_num)
+        self.wind_speed: float = random.uniform(0, 0.1)
         self.index = "wea_"+str(uuid.uuid1())[:10]
 
     def set_wea_drone(self, suit):
