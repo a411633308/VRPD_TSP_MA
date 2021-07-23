@@ -129,25 +129,38 @@ class Routes:
                     self.G.nodes[n]['demand'] = cus_node.pack_needs # default as 1, but actually need to recall with searching function
             elif n[:3] == 'dep':
                 self.G.nodes[n]['type'] = 'depot'
+                self.G.nodes[n]['demand'] = 0
+                self.G.nodes[n]['non_fly_zone'] = 0
                 self.color_map.append(colors[1])
                 for nbr, eattr in nbrs.items():
                     eattr['van_dro_set'] = 1
             elif n[:3] == "doc":
+                self.G.nodes[n]['demand'] = 0
+                self.G.nodes[n]['non_fly_zone'] = 0
                 self.G.nodes[n]['type'] = 'docking hub'
                 self.color_map.append(colors[2])
                 self.G.nodes[n]['max_ba'] = max_bat_num_dockhub
                 self.G.nodes[n]['max_pa'] = max_pack_num_dockhub
 
             for nbr, eattr in nbrs.items():
+                if self.G.nodes[n]['non_fly_zone']:
+                    eattr['non_fly_zone'] = 1
+                else:
+                    eattr['non_fly_zone'] = 1
+
+                eattr['weight'] = 0
+                # get the related Object class according to index from the NetworkX
                 node_1 = self.find_node(n)
                 node_2 = self.find_node(nbr)
-                import numpy as np
-                vec1 = np.array([node_1.lat, node_1.long])
-                vec2 = np.array([node_2.lat, node_2.long])
-                #distance_1 = round(np.linalg.norm(vec1-vec2))
-                distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))/13
-                eattr['weight'] = round(distance_1, 2)
+                if type(node_1)!=type(ValueError):
+                    import numpy as np
+                    vec1 = np.array([node_1.lat, node_1.long])
+                    vec2 = np.array([node_2.lat, node_2.long])
+                    #distance_1 = round(np.linalg.norm(vec1-vec2))
+                    distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))/13
+                    eattr['weight'] = round(distance_1, 2)
 
+                eattr['wind_direction'] = node_1.wind_direction*node_2.wind_direction
 
         return self.color_map
     # It's still short of graph with specific font size and format

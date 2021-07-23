@@ -20,6 +20,7 @@ class Customers:
         self.in_non_flying: bool = non_flying
         self.long: int = longtitude
         self.lat: int = latitude
+        self.wind_direction: int = random.choice([1,-1])
 
     def __index__(self):
         return self.index

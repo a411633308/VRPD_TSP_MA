@@ -10,6 +10,7 @@ class Depot:
         self.type: str = "depot"
         self.long: int = longtitue[0]
         self.lat: int = latitude[0]
+        self.wind_direction: int = random.choice([1,-1])
 
     def __index__(self):
         return self.index

@@ -29,6 +29,7 @@ class Docking_hubs:
         self.packages: list = [Packages() for i in range(stock_packages)]
         self.long: int = longtitude[0]
         self.lat: int = latitude[3]
+        self.wind_direction: int = random.choice([1,-1])
 
     def __eq__(self, other):
         return self.index == other.index
