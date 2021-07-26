@@ -25,11 +25,11 @@ max_bat_num_dockhub: int = 5  # the maximum batteries can be saved at a docking 
 dockhub_num: int = 3  # the number of docking hub nodes on the map to transport
 depot_num: int = 1  # the number of depot on the map, only one is chosen
 customer_num: int = 30  # the number of customers in the map
-customer_needs: dict = [1, False]  # [the number of packages the customer needs, whether lives in a "non flying range"]
+customer_needs: dict = [1, 0]  # [the number of packages the customer needs, whether lives in a "non flying range"]
 
 # ---------------------- params for initiating a map graph --------------------------------
 color_list: list = ['skyblue', 'red', 'orange']
 seed_num: int = 178    # random seed to generate the location of docking hubs, depot and customer nodes
 graph_params_list: list = [dockhub_num, depot_num, customer_num]    # params needed to generate a solution
 route_params_list: list = [max_bat_num_dockhub, flying_range_drone, customer_needs]
-non_fly_num: int = 3    # the number of customers who live in a non flying range
+non_fly_num: int = 6    # the number of customers who live in a non flying range

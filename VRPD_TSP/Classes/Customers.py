@@ -4,7 +4,7 @@ import uuid
 import random
 
 class Customers:
-    def __init__(self, pack_needs: int = 1, non_flying: bool = False,
+    def __init__(self, pack_needs: int = 1, non_flying: int = 0,
                  longtitude: int = random.sample(range(10, 50), random.randint(0, len(range(10, 50)))),
                  latitude: int = random.sample(range(20, 60), random.randint(0, len(range(50, 80))))):
         """
@@ -17,7 +17,7 @@ class Customers:
         self.pack_needs: int = pack_needs
         self.required_pack_list: list[str] = list()
         self.served: bool = False
-        self.in_non_flying: bool = non_flying
+        self.in_non_flying: int = non_flying
         self.long: int = longtitude
         self.lat: int = latitude
         self.wind_direction: int = random.choice([1,-1])
@@ -56,8 +56,8 @@ class Customers:
             self.served = True
         return 1
 
-    def live_in_non_flying(self, live_in: bool):
-        self.in_non_flying = live_in
+    def live_in_non_flying(self):
+        self.in_non_flying = 1
         return 1
 
     def get_live_location(self):

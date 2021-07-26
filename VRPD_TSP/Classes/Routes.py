@@ -38,6 +38,7 @@ class Routes:
         self.fix_position: dict = dict()
 
         self.init_graph_nodes()
+        self.set_non_flying()
         self.set_color_weights_type(color_list)
 
         self.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph.png')
@@ -87,7 +88,6 @@ class Routes:
                                         self.nodes_graph[i].lat]})
          for i in range(len(z))]
 
-
         for i in range(len(z)*3):
             a = random.choice(z)
             b = random.choice(z)
@@ -106,16 +106,17 @@ class Routes:
         plt.savefig(graph_url)
         plt.close()
 
-    def set_non_flying(self, non_fly_num: int):
+    def set_non_flying(self):
         """
         set a number of customers live in "non flying range"
         :param self:
         :param non_fly_num: the number of the relevant customers
         :return: the related indexes of customer nodes
         """
+        from Classes.PARAMs import non_fly_num
         customers_indexes: list = list()
         [customers_indexes.append(choice(range(len(self.nodes_customers)))) for i in range(non_fly_num)]
-        [self.nodes_customers[i].live_in_non_flying(True) for i in customers_indexes]
+        [self.nodes_customers[i].live_in_non_flying() for i in customers_indexes]
         return customers_indexes
 
     def set_color_weights_type(self, colors):
@@ -143,10 +144,15 @@ class Routes:
                 self.G.nodes[n]['max_pa'] = max_pack_num_dockhub
 
             for nbr, eattr in nbrs.items():
-                if self.G.nodes[n]['non_fly_zone']:
-                    eattr['non_fly_zone'] = 1
+                # if self.G.nodes[n]['non_fly_zone'] == 1:
+                #     eattr['non_fly_zone'] = 1
+                # else:
+                #     eattr['non_fly_zone'] = 0
+
+                if self.G.nodes[n]['demand'] == 1:
+                    eattr['demand'] = 1
                 else:
-                    eattr['non_fly_zone'] = 1
+                    eattr['demand'] = 0
 
                 eattr['weight'] = 0
                 # get the related Object class according to index from the NetworkX
@@ -171,33 +177,5 @@ class Routes:
         if len(found_index)>0:
             return self.nodes_graph[found_index[0]]
         else:
-            print(2)
             return ValueError
-#
-# bat_num: int = 20
-# fly_range: int = 236
-# cus_needs: list = [1, False]
-#
-# route = Routes(bat_dock_num=bat_num, drone_fly_range=fly_range, cust_needs=cus_needs)
-# graph = route.init_graph(dckh_num=6, dep_num=3, cus_num=36)
-#
-# route.set_non_flying(18)
-#
-# # initiate new graph with specific weights
-# nodes_len: int = len(route.nodes_graph)
-# drones_weights: list = list()
-# random.seed(100)
-# [drones_weights.append(random.random()*random.uniform(0, 15)) for i in range(nodes_len)]
-# van_weights: list = list()
-# [van_weights.append(random.random()*random.uniform(0, 15)) for i in range(nodes_len)]
-#
-# # plotting the graph
-# color_map = route.set_color_weights_type(['skyblue', 'red', 'orange'],[drones_weights, van_weights])
-# nx.draw(graph, node_color=color_map, with_labels=False)
-# plt.show()
-
-
-# route = Routes()
-# nodes_list = route.init_graph_nodes()
-# print(nodes_list)
 
