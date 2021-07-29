@@ -62,7 +62,7 @@ class Depot_Constrains(Constrains):
                                                                 for i in range(len(self.docking_hubs))]
 
         self.vehicle: Vehicles = vehicles
-        self.vehicle.init_sets()
+        # self.vehicle.init_sets()
         self.van_constrains: Van_Constrains = Van_Constrains(self.vehicle)
         self.drones: list[Drone_Constrains] = [Drone_Constrains(self.vehicle.drones[i])
                                                for i in range(len(self.vehicle.drones))]

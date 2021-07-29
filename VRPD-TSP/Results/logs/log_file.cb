@@ -1,16 +1,16 @@
 Gurobi Optimizer version 9.1.2 build v9.1.2rc0 (win64)
 Thread count: 4 physical cores, 4 logical processors, using up to 4 threads
-Optimize a model with 43 rows, 270 columns and 450 nonzeros
-Model fingerprint: 0x5b1c8a53
-Variable types: 0 continuous, 270 integer (270 binary)
+Optimize a model with 24 rows, 114 columns and 320 nonzeros
+Model fingerprint: 0xc14f71b7
+Variable types: 0 continuous, 114 integer (114 binary)
 Coefficient statistics:
   Matrix range     [1e+00, 1e+00]
-  Objective range  [3e-01, 2e+01]
+  Objective range  [3e-01, 5e+00]
   Bounds range     [1e+00, 1e+00]
-  RHS range        [1e+00, 4e+02]
+  RHS range        [1e+00, 5e+02]
 Found heuristic solution: objective 0.0000000
 
-Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
 Thread count was 1 (of 4 available processors)
 
 Solution count 1: 0 

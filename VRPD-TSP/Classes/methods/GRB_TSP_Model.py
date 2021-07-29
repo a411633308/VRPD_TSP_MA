@@ -19,7 +19,6 @@ class GRB_TSP_Model:
         self.dict_dro_0: dict = {(i+'dro_0',j+'dro_0'): distance*rate_load_pack_drone for i,j,distance in self.graph_data}
         self.dict_dro_1: dict = {(i+'dro_1',j+'dro_1'): distance*rate_load_pack_van for i,j,distance in self.graph_data}
         self.dict_van: dict = {(i+'van',j+'van'): distance*rate_load_pack_van for i,j,distance in self.graph_data}
-        print(self.dict_van)
         # ------------ Gurobi: Variables -------------------------------------------------------------------------------
         self.vars: dict = dict()
         self.add_variable()
@@ -65,11 +64,30 @@ class GRB_TSP_Model:
         self.m.addConstr(self.vars['van'].sum()<=max_range_van, name='energy_van')
         self.m.addConstr(self.vars['dro_0'].sum()<=flying_range_drone, name='energy_dro_0')
         self.m.addConstr(self.vars['dro_1'].sum()<=flying_range_drone, name='energy_dro_1')
+        # ------------- Drones must take off with van at Depot ---------------------------------------------------------
+        for i in list(self.dict_van.keys()):
+            if i[0][:3] == 'dep' and i[1][:3] != 'cus':
+                self.m.addConstr(self.vars['van'][i] == self.dict_van[i], name='van_depot')
+
+        for i in list(self.dict_dro_0.keys()):
+            if i[0][:3] == 'dep' and i[1][:3] != 'cus':
+                self.m.addConstr(self.vars['dro_0'][i] == 0, name='dro_depot')
+
+        for i in list(self.dict_dro_1.keys()):
+            if i[0][:3] == 'dep' and i[1][:3] != 'cus':
+                self.m.addConstr(self.vars['dro_1'][i] == 0, name='dro_depot')
+
+        # if the route is not from a depot to a customer node, it must be covered by van but not drones.
+        # keys = list(self.dict_van.keys())
+        # print("------------------------ ",self.vars['van'][keys[0]], '\n', keys[0][0])
+
+
         # ------------ Customer Demand for van and drones --------------------------------------------------------------
-        self.m.addConstrs((gp.quicksum([self.vars['van'].sum(i, '*'),
-                                        self.vars['dro_0'].sum(i, '*'),
-                                        self.vars['dro_1'].sum(i, '*')]) <= self.grb_var.customer_demand[i]
+        a = self.m.addConstrs((gp.quicksum([self.vars['van'].sum(i+'van', '*'),
+                                        self.vars['dro_0'].sum(i+'dro_0', '*'),
+                                        self.vars['dro_1'].sum(i+'dro_1', '*')]) <= self.grb_var.customer_demand[i]
                            for i in self.grb_var.nodes_oder), name='cus_demand')
+        print("*********** the constrain of dro_1 is: ", a, '\n', type(a))
         # This expression equals to the following:
         # for i in self.grb_var.nodes_oder:
         #     a = gp.quicksum([self.vars['van'].sum(i, '*'),
@@ -79,8 +97,8 @@ class GRB_TSP_Model:
 
         # ------------ Non Fly Range for the drones --------------------------------------------------------------------
         # print(self.grb_var.non_fly_zone[self.grb_var.nodes_oder[0]])
-        self.m.addConstrs((gp.quicksum([self.vars['dro_0'].sum(i, '*'),
-                                        self.vars['dro_1'].sum(i, '*')]) <= 0
+        self.m.addConstrs((gp.quicksum([self.vars['dro_0'].sum(i+'dro_0', '*'),
+                                        self.vars['dro_1'].sum(i+'dro_1', '*')]) <= 0
                            for i in self.grb_var.nodes_oder
                            if self.grb_var.non_fly_zone[i] == 1), name='non_fly')
 
