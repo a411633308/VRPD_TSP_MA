@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d7e0575a-bafe-4a00-b755-61f700dee6f5" name="Default Changelist" comment="1. gurobi with callback function but runs with unoptimized solution" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="ADD_SUFFIX_TO_CHERRY_PICKS_OF_PUBLISHED_COMMITS" value="false" />
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="origin/main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="PATH_TO_GIT" value="https://github.com/a411633308/VRPD_TSP_MA.git" />
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1uaHnKrN6et9iFOfyQC7kntfmRf" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\Unterricht\05-2021\MA\Projects\VRPD_TSP\Classes\methods" />
+      <recent name="G:\Unterricht\05-2021\MA\Projects\VRPD_TSP" />
+      <recent name="G:\Unterricht\05-2021\MA\Projects\VRPD_TSP\Classes" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.GRB_TSP_Model">
+    <configuration name="GRB_Models" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VRPD_TSP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Classes/methods" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Classes/methods/GRB_Models.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="GRB_TSP_Model" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="VRPD_TSP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Classes/methods" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Classes/methods/GRB_TSP_Model.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="GRB_Var_Constrs (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VRPD_TSP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Classes/methods" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Classes/methods/GRB_Var_Constrs.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="GRB_Var_Constrs" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VRPD_TSP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Classes/methods" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="G:\Unterricht\05-2021\MA\Projects\VRPD_TSP\Classes\methods\GRB_Var_Constrs.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Routes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VRPD_TSP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Classes" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Classes/Routes.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Routes" />
+        <item itemvalue="Python.GRB_Models" />
+        <item itemvalue="Python.GRB_Var_Constrs (1)" />
+        <item itemvalue="Python.GRB_Var_Constrs" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_MODE" value="false" />
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+    <option name="ACTIVE_ACTIONS" value=",ALPHA_COMPARATOR" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d7e0575a-bafe-4a00-b755-61f700dee6f5" name="Default Changelist" comment="" />
+      <created>1624896945304</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1624896945304</updated>
+    </task>
+    <task id="LOCAL-00001" summary="1. regular the index for certain class, namely with first three letters of each role as each class' index.&#10;2. a new class for route, but still lack of weights for each edge">
+      <created>1625425015993</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1625425015993</updated>
+    </task>
+    <task id="LOCAL-00002" summary="1. routes with weights randomly generated">
+      <created>1625576879637</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1625576879637</updated>
+    </task>
+    <task id="LOCAL-00003" summary="1. matrix of weights of drones and vans&#10;2. ways to generate initial solution: (1) adjacency matrix of nodes -&gt; adjacency matrix of drones and vans -&gt; an initial Solution, (2)after then according to conditions to check the validity of the solution, and generate the cost function, (3) generate another solution in certain method.&#10;3. parts (2) and (3) are stil unprogrammed currently">
+      <created>1625763590050</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1625763590050</updated>
+    </task>
+    <task id="LOCAL-00004" summary="1. constrains for van and drone&#10;2. issue by whether locate the customers' deliver needs deep into certain index of packages or just mark with number of needs. -&gt; currently, both function will be programmed but the latter is planed to used in SA method.">
+      <created>1626261425700</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1626261425701</updated>
+    </task>
+    <task id="LOCAL-00005" summary="3. the location of Drone_Constrains.py has been moved into Class.method">
+      <created>1626261578859</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1626261578859</updated>
+    </task>
+    <task id="LOCAL-00006" summary="1. through PARAMs.py manage all needed parameters in the project.&#10;2. regarding Station_Constrains.py, especially the class Depot_Constrains in it as a kind of API to programing.">
+      <created>1626372368820</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1626372368820</updated>
+    </task>
+    <task id="LOCAL-00007" summary="3. API of this project that is generated by Sphinx automatically.">
+      <created>1626384839642</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1626384839642</updated>
+    </task>
+    <task id="LOCAL-00008" summary="constrs matrix: demand, living zone, connection and connection of van and drones.">
+      <created>1626770677350</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1626770677350</updated>
+    </task>
+    <task id="LOCAL-00009" summary="1. changed the definition of routes' weight and related variables&#10;2. half way of matrix">
+      <created>1626813205061</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1626813205061</updated>
+    </task>
+    <task id="LOCAL-00010" summary="1. preprocessing of variables and constrains for the Gurobi">
+      <created>1626883490231</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1626883490231</updated>
+    </task>
+    <task id="LOCAL-00011" summary="1. preprocessing of variables and constrains for the Gurobi">
+      <created>1626883612816</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1626883612816</updated>
+    </task>
+    <task id="LOCAL-00012" summary="2. the condition for the maximum batteries left in the network">
+      <created>1626890144019</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1626890144019</updated>
+    </task>
+    <task id="LOCAL-00013" summary="1. much more customer nodes, from 13 to 30">
+      <created>1626945294883</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1626945294883</updated>
+    </task>
+    <task id="LOCAL-00014" summary="1. controller for the variables and related constrains matrix">
+      <created>1626961932582</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1626961932582</updated>
+    </task>
+    <task id="LOCAL-00015" summary="1. legal data type for Gurobi variables and constrains">
+      <created>1627053262249</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1627053262249</updated>
+    </task>
+    <task id="LOCAL-00016" summary="1. complete process of add variables, constrains and optimization&#10;2. but the results are not understandable">
+      <created>1627330721492</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1627330721492</updated>
+    </task>
+    <task id="LOCAL-00017" summary="1. gurobi with callback function but runs with unoptimized solution">
+      <created>1627488402816</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1627488402816</updated>
+    </task>
+    <task id="LOCAL-00018" summary="1. gurobi with callback function but runs with unoptimized solution">
+      <created>1627498862651</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1627498862651</updated>
+    </task>
+    <task id="LOCAL-00019" summary="1. gurobi with callback function but runs with unoptimized solution">
+      <created>1627498869483</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1627498869483</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1. regular the index for certain class, namely with first three letters of each role as each class' index.&#10;2. a new class for route, but still lack of weights for each edge" />
+    <MESSAGE value="1. routes with weights randomly generated" />
+    <MESSAGE value="1. matrix of weights of drones and vans&#10;2. ways to generate initial solution: (1) adjacency matrix of nodes -&gt; adjacency matrix of drones and vans -&gt; an initial Solution, (2)after then according to conditions to check the validity of the solution, and generate the cost function, (3) generate another solution in certain method.&#10;3. parts (2) and (3) are stil unprogrammed currently" />
+    <MESSAGE value="1. constrains for van and drone&#10;2. issue by whether locate the customers' deliver needs deep into certain index of packages or just mark with number of needs. -&gt; currently, both function will be programmed but the latter is planed to used in SA method." />
+    <MESSAGE value="3. the location of Drone_Constrains.py has been moved into Class.method" />
+    <MESSAGE value="1. through PARAMs.py manage all needed parameters in the project.&#10;2. regarding Station_Constrains.py, especially the class Depot_Constrains in it as a kind of API to programing." />
+    <MESSAGE value="3. API of this project that is generated by Sphinx automatically." />
+    <MESSAGE value="constrs matrix: demand, living zone, connection and connection of van and drones." />
+    <MESSAGE value="1. changed the definition of routes' weight and related variables&#10;2. half way of matrix" />
+    <MESSAGE value="1. preprocessing of variables and constrains for the Gurobi" />
+    <MESSAGE value="2. the condition for the maximum batteries left in the network" />
+    <MESSAGE value="1. much more customer nodes, from 13 to 30" />
+    <MESSAGE value="1. controller for the variables and related constrains matrix" />
+    <MESSAGE value="1. legal data type for Gurobi variables and constrains" />
+    <MESSAGE value="1. complete process of add variables, constrains and optimization&#10;2. but the results are not understandable" />
+    <MESSAGE value="1. gurobi with callback function but runs with unoptimized solution" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. gurobi with callback function but runs with unoptimized solution" />
+    <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2738" y="163" key="#Inspections" timestamp="1627122443152">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2738" y="163" key="#Inspections/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627122443152" />
+    <state x="2950" y="319" key="#Notifications" timestamp="1627498930686">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2950" y="319" key="#Notifications/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627498930686" />
+    <state x="2344" y="0" key="#Project_Structure" timestamp="1627489318180">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2344" y="0" key="#Project_Structure/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627489318180" />
+    <state x="249" y="837" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1626377006941">
+      <screen x="0" y="0" width="1234" height="2154" />
+    </state>
+    <state x="249" y="837" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626377006941" />
+    <state x="2724" y="117" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog" timestamp="1627499390629">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="317" y="538" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627489156737" />
+    <state x="2724" y="117" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627499390629" />
+    <state x="362" y="616" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626442022499" />
+    <state x="-1798" y="25" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625829896317" />
+    <state x="-1798" y="24" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625579736883" />
+    <state x="2645" y="309" key="FileChooserDialogImpl" timestamp="1627504024618">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2645" y="309" key="FileChooserDialogImpl/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627504024618" />
+    <state x="-1848" y="503" key="FileChooserDialogImpl/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625264895102" />
+    <state width="1014" height="418" key="GridCell.Tab.0.bottom" timestamp="1627488987529">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="418" key="GridCell.Tab.0.bottom/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488987529" />
+    <state width="1826" height="275" key="GridCell.Tab.0.bottom/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627049322327" />
+    <state width="1167" height="221" key="GridCell.Tab.0.bottom/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626442015280" />
+    <state width="1146" height="221" key="GridCell.Tab.0.bottom/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626016922072" />
+    <state width="1167" height="233" key="GridCell.Tab.0.bottom/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625763626531" />
+    <state width="1167" height="343" key="GridCell.Tab.0.bottom/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625425480681" />
+    <state width="1167" height="191" key="GridCell.Tab.0.bottom/0.0.1920.1040/-2160.-746.1234.2154@-2160.-746.1234.2154" timestamp="1624916334589" />
+    <state width="1853" height="209" key="GridCell.Tab.0.bottom/1920.0.2194.1211/0.0.1920.1040@0.0.1920.1040" timestamp="1625495748845" />
+    <state width="1014" height="418" key="GridCell.Tab.0.center" timestamp="1627488987527">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="418" key="GridCell.Tab.0.center/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488987527" />
+    <state width="1826" height="275" key="GridCell.Tab.0.center/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627049322327" />
+    <state width="1167" height="221" key="GridCell.Tab.0.center/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626442015280" />
+    <state width="1146" height="221" key="GridCell.Tab.0.center/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626016922071" />
+    <state width="1167" height="233" key="GridCell.Tab.0.center/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625763626531" />
+    <state width="1167" height="343" key="GridCell.Tab.0.center/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625425480680" />
+    <state width="1167" height="191" key="GridCell.Tab.0.center/0.0.1920.1040/-2160.-746.1234.2154@-2160.-746.1234.2154" timestamp="1624916334589" />
+    <state width="1853" height="209" key="GridCell.Tab.0.center/1920.0.2194.1211/0.0.1920.1040@0.0.1920.1040" timestamp="1625495748845" />
+    <state width="1014" height="418" key="GridCell.Tab.0.left" timestamp="1627488987525">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="418" key="GridCell.Tab.0.left/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488987525" />
+    <state width="1826" height="275" key="GridCell.Tab.0.left/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627049322327" />
+    <state width="1167" height="221" key="GridCell.Tab.0.left/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626442015280" />
+    <state width="1146" height="221" key="GridCell.Tab.0.left/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626016922071" />
+    <state width="1167" height="233" key="GridCell.Tab.0.left/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625763626531" />
+    <state width="1167" height="343" key="GridCell.Tab.0.left/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625425480680" />
+    <state width="1167" height="191" key="GridCell.Tab.0.left/0.0.1920.1040/-2160.-746.1234.2154@-2160.-746.1234.2154" timestamp="1624916334589" />
+    <state width="1853" height="209" key="GridCell.Tab.0.left/1920.0.2194.1211/0.0.1920.1040@0.0.1920.1040" timestamp="1625495748845" />
+    <state width="1014" height="418" key="GridCell.Tab.0.right" timestamp="1627488987528">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="418" key="GridCell.Tab.0.right/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488987528" />
+    <state width="1826" height="275" key="GridCell.Tab.0.right/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627049322327" />
+    <state width="1167" height="221" key="GridCell.Tab.0.right/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626442015280" />
+    <state width="1146" height="221" key="GridCell.Tab.0.right/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626016922071" />
+    <state width="1167" height="233" key="GridCell.Tab.0.right/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625763626531" />
+    <state width="1167" height="343" key="GridCell.Tab.0.right/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625425480681" />
+    <state width="1167" height="191" key="GridCell.Tab.0.right/0.0.1920.1040/-2160.-746.1234.2154@-2160.-746.1234.2154" timestamp="1624916334589" />
+    <state width="1853" height="209" key="GridCell.Tab.0.right/1920.0.2194.1211/0.0.1920.1040@0.0.1920.1040" timestamp="1625495748845" />
+    <state width="1014" height="648" key="GridCell.Tab.1.bottom" timestamp="1627323021814">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="648" key="GridCell.Tab.1.bottom/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627323021814" />
+    <state width="918" height="309" key="GridCell.Tab.1.bottom/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1626942734033" />
+    <state width="1014" height="648" key="GridCell.Tab.1.center" timestamp="1627323021813">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="648" key="GridCell.Tab.1.center/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627323021813" />
+    <state width="918" height="309" key="GridCell.Tab.1.center/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1626942734033" />
+    <state width="1014" height="648" key="GridCell.Tab.1.left" timestamp="1627323021813">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="648" key="GridCell.Tab.1.left/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627323021813" />
+    <state width="918" height="309" key="GridCell.Tab.1.left/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1626942734032" />
+    <state width="1014" height="648" key="GridCell.Tab.1.right" timestamp="1627323021814">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state width="1014" height="648" key="GridCell.Tab.1.right/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627323021814" />
+    <state width="918" height="309" key="GridCell.Tab.1.right/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1626942734033" />
+    <state x="102" y="172" key="MergeDialog" timestamp="1627489239413">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state x="102" y="172" key="MergeDialog/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627489239413" />
+    <state x="378" y="742" key="MultipleFileMergeDialog" timestamp="1627489239420">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state x="378" y="742" key="MultipleFileMergeDialog/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627489239420" />
+    <state x="2160" y="0" key="SettingsEditor" timestamp="1627503622727">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-88" y="402" key="SettingsEditor/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488985337" />
+    <state x="2160" y="0" key="SettingsEditor/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627503622727" />
+    <state x="0" y="547" key="SettingsEditor/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626516188748" />
+    <state x="-2161" y="-643" key="SettingsEditor/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625305669155" />
+    <state x="2252" y="92" width="1736" height="856" key="ShowDiffWithBranchDialog" timestamp="1627499401812">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2252" y="92" width="1736" height="856" key="ShowDiffWithBranchDialog/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627499401812" />
+    <state x="2176" y="243" key="Vcs.Push.Dialog.v2" timestamp="1627499498380">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="439" key="Vcs.Push.Dialog.v2/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488488309" />
+    <state x="2176" y="243" key="Vcs.Push.Dialog.v2/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627499498380" />
+    <state x="10" y="679" key="Vcs.Push.Dialog.v2/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626384928527" />
+    <state x="-2150" y="87" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625763602920" />
+    <state x="-2150" y="-35" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625425036593" />
+    <state x="2610" y="448" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1627499369860">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="253" y="809" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627489095813" />
+    <state x="2610" y="448" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627499369860" />
+    <state x="2243" y="133" width="889" height="995" maximized="true" key="dock-window-1" timestamp="1627487881289">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2243" y="133" width="889" height="995" maximized="true" key="dock-window-1/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627487881289" />
+    <state x="-15" y="421" width="889" height="995" maximized="true" key="dock-window-1/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627480697807" />
+    <state x="2304" y="89" width="906" height="795" key="dock-window-1/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626432632511" />
+    <state x="0" y="0" width="1183" height="1156" key="dock-window-1/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626013951433" />
+    <state x="-7" y="0" width="974" height="1047" maximized="true" key="dock-window-1/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625752485729" />
+    <state x="953" y="0" width="974" height="1047" key="dock-window-1/1920.0.2194.1211/0.0.1920.1040@0.0.1920.1040" timestamp="1625486778457" />
+    <state x="0" y="376" width="1092" height="1037" key="dock-window-2" timestamp="1627314240677">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state x="0" y="376" width="1092" height="1037" key="dock-window-2/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627314240677" />
+    <state x="67" y="234" width="1181" height="786" key="dock-window-2/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1626532841082" />
+    <state x="2143" y="105" width="1294" height="679" key="dock-window-2/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626532638627" />
+    <state x="-1797" y="-591" width="885" height="1340" key="dock-window-2/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625837964936" />
+    <state x="2350" y="0" width="1160" height="1046" maximized="true" key="dock-window-3" timestamp="1627303824829">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2350" y="0" width="1160" height="1046" maximized="true" key="dock-window-3/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627303824829" />
+    <state x="-49" y="447" width="1160" height="933" maximized="true" key="dock-window-3/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1626786363562" />
+    <state x="2160" y="0" width="1294" height="670" key="dock-window-3/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626434958693" />
+    <state x="463" y="194" width="885" height="1331" key="dock-window-3/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625837964936" />
+    <state x="0" y="957" width="1092" height="1037" key="dock-window-4" timestamp="1627053395896">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state x="0" y="957" width="1092" height="1037" key="dock-window-4/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627053395896" />
+    <state x="-19" y="77" width="1248" height="661" key="dock-window-4/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626435095908" />
+    <state x="-1818" y="-591" width="906" height="1853" key="dock-window-4/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625837964936" />
+    <state x="2160" y="0" width="906" height="795" maximized="true" key="dock-window-5" timestamp="1626516069036">
+      <screen x="2160" y="0" width="1280" height="680" />
+    </state>
+    <state x="2160" y="0" width="906" height="795" maximized="true" key="dock-window-5/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626516069036" />
+    <state x="0" y="0" width="908" height="1156" maximized="true" key="dock-window-5/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626023517248" />
+    <state x="-1750" y="-10" width="908" height="1156" key="dock-window-6" timestamp="1625839868929">
+      <screen x="-2160" y="-591" width="1234" height="2154" />
+    </state>
+    <state x="-1750" y="-10" width="908" height="1156" key="dock-window-6/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625839868929" />
+    <state x="-1820" y="-591" width="908" height="1147" key="dock-window-7" timestamp="1625839868929">
+      <screen x="-2160" y="-591" width="1234" height="2154" />
+    </state>
+    <state x="-1820" y="-591" width="908" height="1147" key="dock-window-7/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625839868929" />
+    <state x="0" y="0" width="887" height="1156" key="dock-window-8" timestamp="1625839868930">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="0" width="887" height="1156" key="dock-window-8/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1625839868930" />
+    <state x="2795" y="90" key="git4idea.branch.GitSmartOperationDialog" timestamp="1627488535431">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2795" y="90" key="git4idea.branch.GitSmartOperationDialog/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627488535431" />
+    <state x="2675" y="371" key="git4idea.merge.GitMergeDialog" timestamp="1627498925134">
+      <screen x="2160" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2675" y="371" key="git4idea.merge.GitMergeDialog/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627498925134" />
+    <state x="331" y="769" key="git4idea.merge.GitMergeDialog/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626384909243" />
+    <state x="114" y="1129" key="run.anything.popup" timestamp="1626293257441">
+      <screen x="0" y="0" width="1234" height="2154" />
+    </state>
+    <state x="114" y="1129" key="run.anything.popup/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626293257441" />
+    <state x="-2046" y="415" key="run.anything.popup/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625420903661" />
+    <state x="67" y="421" width="1009" height="1284" key="search.everywhere.popup" timestamp="1627485211508">
+      <screen x="0" y="0" width="1080" height="1880" />
+    </state>
+    <state x="67" y="421" width="1009" height="1284" key="search.everywhere.popup/0.0.1080.1880/2160.0.1920.1040@0.0.1080.1880" timestamp="1627485211508" />
+    <state x="2322" y="233" width="1570" height="710" key="search.everywhere.popup/0.0.1080.1880/2160.0.1920.1040@2160.0.1920.1040" timestamp="1627049469229" />
+    <state x="104" y="483" width="1009" height="1470" key="search.everywhere.popup/0.0.1234.2154/2160.0.1280.680@0.0.1234.2154" timestamp="1626438384964" />
+    <state x="-2056" y="-108" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1040/-2160.-591.1234.2154@-2160.-591.1234.2154" timestamp="1626002366595" />
+    <state x="-2054" y="-109" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1040/-2160.-592.1234.2154@-2160.-592.1234.2154" timestamp="1625763484849" />
+    <state x="-2050" y="-227" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1040/-2160.-714.1234.2154@-2160.-714.1234.2154" timestamp="1625420070610" />
+    <state x="-2050" y="-259" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1040/-2160.-746.1234.2154@-2160.-746.1234.2154" timestamp="1624909679792" />
+    <state x="774" y="-2" key="search.everywhere.popup/0.0.2560.1400@0.0.2560.1400" timestamp="1624905329892" />
+  </component>
+</project>
