@@ -5,7 +5,8 @@ from Classes.Packages import Packages
 from Classes.Batteries import Batteries
 import random
 import math
-from Classes.PARAMs import rate_load_range_drone, rate_load_pack_drone, flying_range_drone
+from Classes.PARAMs import rate_load_range_drone, rate_load_pack_drone, \
+                            max_pack_num_dro, flying_range_drone
 
 class Drones:
     def __init__(self, flying_range: int = flying_range_drone):
@@ -21,7 +22,7 @@ class Drones:
         self.bat_res_list: list = list()
 
         # about packages
-        self.package: list = list()
+        self.package: list = [Packages() for i in range(max_pack_num_dro)]
         self.left_packages: int = len(self.package)
         self.package_delivered: list = list()
         self.pack_res_list: list = list()

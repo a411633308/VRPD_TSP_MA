@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
+import numpy as np
+from Classes.PARAMs import dockhub_num,customer_num,depot_num
 from Classes.PARAMs import initial_temp, final_temp, alpha, obj_threshold
 class SA_Model:
     def __init__(self, initial_state):
@@ -12,6 +13,9 @@ class SA_Model:
         self.current_temp = self.initial_temp
 
         self.obj_threshold = obj_threshold
+        self.routes_chosen: dict = dict()
+        self.routes_matrix: dict = dict()
+
 
     def get_current_state(self):
         return self.current_state
@@ -23,7 +27,7 @@ class SA_Model:
         return self.current_temp
 
     def change_current_temp(self):
-        self.current_temp -= self.alph
+        self.current_temp -= self.alpha
 
     def set_current_temp(self, current_tp):
         self.current_temp = current_tp
