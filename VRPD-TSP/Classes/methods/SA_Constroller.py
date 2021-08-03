@@ -13,6 +13,7 @@ import numba as nb
 import networkx as nx
 from random import choice
 from Classes.PARAMs import fixed_cost
+import gurobipy as gp
 
 from Classes.Customers import Customers
 import numpy as np
@@ -51,7 +52,7 @@ class SA_Controller:
 
         # ------------ Objective ---------------------------------------------------------------------------------------
         self.obj: list = list()
-        self.bst_obj: float = sum(self.obj)
+        self.bst_obj: float = self.initial_obj()
         self.bst_sol: dict = {'van': self.var_van, 'dros': self.var_dro}
         self.shortest_pathes: dict = {'van': 0, 'dro_0':0, 'dor_1':0}
 
@@ -61,7 +62,22 @@ class SA_Controller:
                                                                  for i in range(dockhub_num)]
         self.depot_constrain: Depot_Constrains = Depot_Constrains()
 
-    # @nb.jit(nopython=True)
+    def initial_obj(self):
+        self.initial_solution()
+        self.obj.append(fixed_cost)
+        # print(list(self.vars['van'].keys()),'\n',self.vars['van'])
+        for i, j in list(self.vars['van'].keys()):
+            # for x, y in list(self.var_van.keys()):
+            if i!=j:
+                temp = self.var_dro[0][i, j]* \
+                       self.dict_dro[i, j] + \
+                       self.var_dro[0][i, j]* \
+                       self.dict_dro[i, j] \
+                       + self.var_van[i, j]* \
+                       self.dict_van[i, j]
+                self.obj.append(temp)
+        return sum(self.obj)
+
     def objective_fn(self):
         """
         the weight_van*solution_van + weight_dro*solution_dro[0] + weight_dro*solution_dro[1] + fixed_cost
@@ -80,11 +96,15 @@ class SA_Controller:
                        self.dict_van[i, j]
                 self.obj.append(temp)
 
-        if self.bst_obj<=sum(self.obj):
+        if self.bst_obj<=sum(self.obj) and self.bst_obj!=0:
             return self.bst_obj
         elif self.bst_obj>=sum(self.obj):
             # update the best objective result and the related solution
-            self.bst_obj = sum(self.obj)
+            self.bst_obj=sum(self.obj)
+
+            for i in self.obj:
+                self.bst_obj+=i
+
             self.bst_sol['van'] = self.var_van
             self.bst_sol['dros'] = self.var_dro
             return self.bst_obj
@@ -212,69 +232,49 @@ class SA_Controller:
                 else:
                     continue
         return True
-        # ------------ Customer Demand Constrains ----------------------------------------------------------------------
 
-        # ------------ Energy Constrains -------------------------------------------------------------------------------
-        # ------------
+    def subtour(self, edges):
+        """
+        find the shortest route
+        :param edges: given edges of certain vehicles
+        :return:
+        """
+        unvisited = self.grb_var.nodes_oder
+        cycle = self.grb_var.nodes_oder # Dummy - guaranteed to be replaced
+        while unvisited:  # true if list is non-empty
+            thiscycle = []
+            neighbors = unvisited
+            while neighbors:
+                current = neighbors[0]
+                thiscycle.append(current)
+                unvisited.remove(current)
+                neighbors = [j for i, j in edges.select(current, '*')
+                             if j in unvisited]
+            if len(thiscycle) <= len(cycle):
+                cycle = thiscycle # New shortest subtour
+        return cycle
 
-        # ------------ Non Flying Zone Constrains ----------------------------------------------------------------------
-
-        # ------------ Packages Reload ---------------------------------------------------------------------------------
-        # print('************ (7) ')
     def constr_connectivity(self):
         flag_van: bool = False
         flag_dro0: bool = False
         flag_dro1: bool = False
 
-        # connectivity judgement of the van
-        a = nx.from_edgelist(self.vars['van'])
-        solution_matrix = nx.to_numpy_array(a)
-        # print(solution_matrix)
-        depot_index = [i for i in range(self.grb_var.nodes_len) if self.grb_var.nodes_oder[i][:3]=='dep']
-        target_index = [-i for i in range(self.grb_var.nodes_len) if sum(solution_matrix[-i])!=0]
-        matrix = nx.shortest_path(a, source=self.grb_var.nodes_oder[depot_index[0]], target=self.grb_var.nodes_oder[target_index[0]])
-        # print('\n =====> shortest path lengtsh: ', nx.shortest_path_length(a, source=self.grb_var.nodes_oder[depot_index[0]]))
-        # print(type(matrix),'\n', matrix)
-        if len(matrix)<self.grb_var.nodes_len/2:
-            return False
-        else:
-            self.sa_model.routes_chosen['van']=matrix
-            self.sa_model.routes_matrix['van']=solution_matrix
-            flag_van = True
+        edges = gp.tuplelist((i,j) for i,j in self.vars['van'].keys())
+        cycle1 = self.subtour(edges)
+        if len(cycle1)<=int(self.grb_var.nodes_len/1.5):
+            flag_van=True
 
-        # connectivity judgement of the dro0
-        a = nx.from_edgelist(self.vars['dros'][0])
+        edges = gp.tuplelist((i,j) for i,j in self.vars['dros'][0].keys())
+        cycle1 = self.subtour(edges)
+        if len(cycle1)<= int(self.grb_var.nodes_len/2):
+            # print(int(self.grb_var.nodes_len/2))
+            flag_dro0=True
 
-        solution_matrix = nx.to_numpy_array(a)
-        # print(solution_matrix)
-        depot_index = [i for i in range(self.grb_var.nodes_len) if self.grb_var.nodes_oder[i][:3]=='dep']
-        target_index = [-i for i in range(self.grb_var.nodes_len) if sum(solution_matrix[-i])!=0]
-        matrix = nx.shortest_path(a, source=self.grb_var.nodes_oder[depot_index[0]], target=self.grb_var.nodes_oder[target_index[0]])
-        # print('\n =====> shortest path lengtsh: ', nx.shortest_path_length(a, source=self.grb_var.nodes_oder[depot_index[0]]))
-        # print(type(matrix),'\n', matrix)
-        if len(matrix)<self.grb_var.nodes_len/3:
-            return False
-        else:
-            self.sa_model.routes_chosen['dro0']=matrix
-            self.sa_model.routes_matrix['dro0']=solution_matrix
-            flag_dro0 = True
-
-        # connectivity judgement of the dro1
-        a = nx.from_edgelist(self.vars['dros'][1])
-
-        solution_matrix = nx.to_numpy_array(a)
-        # print(solution_matrix)
-        depot_index = [i for i in range(self.grb_var.nodes_len) if self.grb_var.nodes_oder[i][:3]=='dep']
-        target_index = [-i for i in range(self.grb_var.nodes_len) if sum(solution_matrix[-i])!=0]
-        matrix = nx.shortest_path(a, source=self.grb_var.nodes_oder[depot_index[0]], target=self.grb_var.nodes_oder[target_index[0]])
-        # print('\n =====> shortest path lengtsh: ', nx.shortest_path_length(a, source=self.grb_var.nodes_oder[depot_index[0]]))
-        # print(type(matrix),'\n', matrix)
-        if len(matrix)<self.grb_var.nodes_len/3:
-            return False
-        else:
-            self.sa_model.routes_chosen['dro1']=matrix
-            self.sa_model.routes_matrix['dro1']=solution_matrix
-            flag_dro1 = True
+        edges = gp.tuplelist((i,j) for i,j in self.vars['dros'][1].keys())
+        cycle1 = self.subtour(edges)
+        if len(cycle1)<= int(self.grb_var.nodes_len/2):
+            # print(int(self.grb_var.nodes_len/2))
+            flag_dro1=True
 
         if flag_dro1==flag_dro0==flag_van:
             return True
@@ -369,14 +369,24 @@ class SA_Controller:
 
         for i in range(10000000000000):
             judge['van_conn'] = self.constr_connectivity()
+            # print('*'*10, ' check the connectivity of the van. ')
             judge['non_fly'] = self.constr_non_fly_zone()
+            # print('*'*10, ' check the non flying zone of the drones. ')
             judge['valid'] = self.constr_valid_solution()
+            # print('*'*10, ' check the validity of the van with drones. ')
             judge['demand'] = self.constr_req_demand()
+            # print('*'*10, ' check the customer demand. ')
             judge['pack'] = self.constr_max_packages()
+            # print('*'*10, ' check the packages requirment. ')
             judge['ener_dro'] = self.constr_energy_dro()
+            # print('*'*10, ' check the energy constrains of the drone . ')
             if judge['non_fly']==False or judge['valid']==False or judge['van_conn']==False \
-                    or judge['pack']==False or judge['ener_dro'==False]:
+                    or judge['pack']==False or judge['ener_dro']==False:
                 self.new_solution(np.random.choice(range(3)))
+                # if i%1000==0:
+                #     print(judge['non_fly'], judge['valid'], judge['van_conn'],
+                #          judge['pack'], judge['ener_dro'])
+                #     print('='*10, '> tried 1000 solutions')
                 continue
             else:
                 flag = True
@@ -453,28 +463,29 @@ class SA_Controller:
     def sa_optimize_fn(self):
         for i in range(int((self.sa_model.initial_temp-self.sa_model.final_temp)/self.sa_model.alpha)):
         # for i in range(2):
-            if i == 0:
-                print('*'*10, ' log ', i, ' ', '*'*10)
-                self.initial_solution()
-                self.sa_model.initial_state = self.vars
-                self.sa_model.current_state = self.sa_model.initial_state
-                self.recurse_evaluation()
-                print('*'*10, ' recurse ', '*'*10)
-                self.objective_fn()
-                print('*'*10, ' objective function ', '*'*10)
-                self.sa_model.change_current_temp()
-                continue
-            else:
-                print('*'*10, ' log ', i, ' ', '*'*10)
-                self.initial_solution()
-                self.recurse_evaluation()
-                print('*'*10, ' recurse ', '*'*10)
-                self.objective_fn()
-                print('*'*10, ' objective function ', '*'*10)
-                self.sa_model.change_current_temp()
-                continue
+        #     if i == 0:
+        #         print('*'*10, ' log ', i, ' ', '*'*10)
+        #         self.initial_solution()
+        #         self.sa_model.initial_state = self.vars
+        #         self.sa_model.current_state = self.sa_model.initial_state
+        #         self.recurse_evaluation()
+        #         print('*'*10, ' recurse ', '*'*10)
+        #         self.objective_fn()
+        #         print('*'*10, ' objective function ', '*'*10)
+        #         self.sa_model.change_current_temp()
+        #         continue
+        #     else:
+            print('*'*10, ' log ', i, ' ', '*'*10)
+            self.initial_solution()
+            self.recurse_evaluation()
+            # print('*'*10, ' recurse ', '*'*10)
+            self.objective_fn()
+            # print('*'*10, ' objective function ', '*'*10)
+            self.sa_model.change_current_temp()
+            continue
 
-        print('*'*10, ' The best Solution ', self.bst_sol, '*'*10)
+        print('*'*10, ' The best Solution ', self.obj,'\n',
+              self.bst_obj, '*'*10)
         print("best solution for the van: ", self.bst_sol['van'])
         for n in range(drones_num_on_van):
             print("\nbest solution for the drone", n , self.bst_sol['dros'][n])
@@ -483,3 +494,4 @@ class SA_Controller:
 sa_controller = SA_Controller()
 sa_controller.initial_solution()
 sa_controller.sa_optimize_fn()
+# sa_controller.constr_connectivity()

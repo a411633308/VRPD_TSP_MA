@@ -138,17 +138,18 @@ class GRB_TSP_Model:
 temp = GRB_TSP_Model()
 
 def SA_callback(model, where):
-    if where == GRB.Callback.POLLING:
-        # ignore polling callback
-        pass
-
-    # elif where == GRB.Callback.MIPSOL:
-    #     # MIP solution callback
-    #     nodecnt = model.cbGet(GRB.Callback.MIPSOL_NODCNT)
-    #     obj = model.cbGet(GRB.Callback.MIPSOL_OBJ)
-    #     solcnt = model.cbGet(GRB.Callback.MIPSOL_SOLCNT)
+    # if where == GRB.Callback.POLLING:
     #     x = model.cbGetSolution(model._vars)
-    #     print('**** New solution at node %d, obj %g, sol %d, x[0] = %g ****' % (nodecnt, obj, solcnt, x))
+    #     model.cbGet(model.getVars(), x)
+    #     print(temp.sa_model.change_current_temp())
+
+    if where == GRB.Callback.MIPSOL:
+        # MIP solution callback
+        nodecnt = model.cbGet(GRB.Callback.MIPSOL_NODCNT)
+        obj = model.cbGet(GRB.Callback.MIPSOL_OBJ)
+        solcnt = model.cbGet(GRB.Callback.MIPSOL_SOLCNT)
+        x = model.cbGetSolution(model._vars)
+        print('**** New solution at node %d, obj %g, sol %d, x[0] = %g ****' % (nodecnt, obj, solcnt, x))
 
     elif where == GRB.Callback.MESSAGE:
         # Message callback
