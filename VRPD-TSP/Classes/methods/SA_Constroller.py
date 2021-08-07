@@ -23,15 +23,17 @@ class SA_Controller:
         self.grb_var: GRB_Var_Constrs = GRB_Var_Constrs()
         self.vehicle: Vehicles = Vehicles()
         self.sa_model: SA_Model = SA_Model(self.grb_var.solution_matrix_drones)
-        # print(type(self.solution_van))
-
+        print(self.grb_var.nodes_oder)
 
         # ------------ Coefficiency ------------------------------------------------------------------------------------
-        # ------------ (1) Weight --------------------------------------------------------------------------------------
+        # ------------ (1) Costs accoring to the Routes' Distance ------------------------------------------------------
+        temp = list(self.grb_var.graph.edges.data('detour_risks'))
+        self.dict_detour: dict = {(i,j): cost for i,j,cost in temp}
+
         self.graph_data: list = list(self.grb_var.graph.edges.data("weight"))
         self.dict_weight: dict = {(i,j): distance for i,j,distance in self.graph_data}
-
-        self.dict_dro: dict = {(i,j): distance*rate_load_pack_drone*self.grb_var.weather.wind_speed
+        self.dict_dro: dict = {(i,j): distance*rate_load_pack_drone*(1+self.grb_var.weather.wind_speed)
+                                      +self.dict_detour[i,j]
                                for i,j,distance in self.graph_data}
         self.dict_van: dict = {(i,j): distance*rate_load_pack_van for i,j,distance in self.graph_data}
 
@@ -45,6 +47,8 @@ class SA_Controller:
             1: self.permutation_solution,
             2: self.other_new_generation,
         }
+        self.chosen_routes: dict = dict()
+        self.chosen_vars: dict = dict()
 
         # ------------ (2) Customer Demand -----------------------------------------------------------------------------
         # Customer demand: print(self.grb_var.customer_demand)
@@ -83,16 +87,18 @@ class SA_Controller:
         the weight_van*solution_van + weight_dro*solution_dro[0] + weight_dro*solution_dro[1] + fixed_cost
         :return: the current best objective
         """
+        # the cost for detour the risks area
+
         self.obj.append(fixed_cost)
         # print(list(self.vars['van'].keys()),'\n',self.vars['van'])
         for i, j in list(self.vars['van'].keys()):
             # for x, y in list(self.var_van.keys()):
             if i!=j:
-                temp = self.var_dro[0][i, j]*\
+                temp = self.vars['dros'][0][i, j]*\
                        self.dict_dro[i, j] + \
-                       self.var_dro[0][i, j]*\
+                       self.vars['dros'][1][i, j]*\
                        self.dict_dro[i, j]\
-                     + self.var_van[i, j]*\
+                     + self.vars['van'][i, j]*\
                        self.dict_van[i, j]
                 self.obj.append(temp)
 
@@ -158,7 +164,7 @@ class SA_Controller:
                         x = c[i,j]
                         c[i,j] = 1
                         y = c[i,j]
-                        # print("*"*10 + ' Generate another Set of Solution Randomly' +"*"*10)
+                        # print("*"*10 +   ' Generate another Set of Solution Randomly' +"*"*10)
             self.vars = {'van': self.var_van, 'dros': self.var_dro}
             self.sa_model.set_current_state(self.vars)
 
@@ -255,29 +261,56 @@ class SA_Controller:
         return cycle
 
     def constr_connectivity(self):
+
+        # ------------ constrains the length of found subset of the routesz
         flag_van: bool = False
         flag_dro0: bool = False
         flag_dro1: bool = False
 
         edges = gp.tuplelist((i,j) for i,j in self.vars['van'].keys())
         cycle1 = self.subtour(edges)
-        if len(cycle1)<=int(self.grb_var.nodes_len/1.5):
+        # print(int(self.grb_var.nodes_len/1.5), int(self.grb_var.nodes_len/2))
+        if len(cycle1)==self.grb_var.nodes_len:
             flag_van=True
+            self.chosen_routes['van'] = cycle1
+            self.chosen_vars['van'] = {(cycle1[i],cycle1[i+1])
+                                       for i in range(len(cycle1)-1)}
 
+        chosen_routes_dros: list = list()
+        tem: dict = dict()
         edges = gp.tuplelist((i,j) for i,j in self.vars['dros'][0].keys())
         cycle1 = self.subtour(edges)
-        if len(cycle1)<= int(self.grb_var.nodes_len/2):
-            # print(int(self.grb_var.nodes_len/2))
+        if len(cycle1)>= int(self.grb_var.nodes_len/2):
+            print(int(self.grb_var.nodes_len/2))
             flag_dro0=True
+            self.chosen_routes['dro0'] = cycle1
+            tem = {(cycle1[i],cycle1[i+1]) for i in range(len(cycle1)-1)}
+            chosen_routes_dros.append(tem)
 
+        tem: dict = dict()
         edges = gp.tuplelist((i,j) for i,j in self.vars['dros'][1].keys())
         cycle1 = self.subtour(edges)
-        if len(cycle1)<= int(self.grb_var.nodes_len/2):
-            # print(int(self.grb_var.nodes_len/2))
+        if len(cycle1)>= int(self.grb_var.nodes_len/2):
+            print(int(self.grb_var.nodes_len/2))
             flag_dro1=True
+            self.chosen_routes['dro1'] = cycle1
+            tem = {(cycle1[i],cycle1[i+1]) for i in range(len(cycle1)-1)}
+            chosen_routes_dros.append(tem)
 
-        if flag_dro1==flag_dro0==flag_van:
-            return True
+        if flag_dro1==flag_dro0==flag_van==True:
+            print("The first and last items of the list \n",
+                  self.chosen_routes['van'])
+            self.chosen_vars['dros'] = chosen_routes_dros
+            tem = {(i,j):0 for i,j,distance in self.vars['van']}
+            self.vars['van'] = {tem.update({(i,j):1}) for i,j in self.chosen_vars['van']}
+            for n in range(drones_num_on_van):
+                tem = {(i,j):0 for i,j,distance in self.vars['dros'][n]}
+                self.vars['dros'][n] = {tem.update({(i,j):1}) for i,j in self.chosen_vars['dros'][n]}
+
+            if self.chosen_routes['van'][0][:3]=='dep':
+                return True
+            else:
+                return False
         else:
             return False
     #
@@ -492,6 +525,5 @@ class SA_Controller:
         return self.bst_obj
 
 sa_controller = SA_Controller()
-sa_controller.initial_solution()
 sa_controller.sa_optimize_fn()
 # sa_controller.constr_connectivity()

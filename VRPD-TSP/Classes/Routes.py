@@ -71,8 +71,9 @@ class Routes:
         self.G = nx.Graph()
 
         self.nodes_graph = list()
-        self.nodes_graph.append(choice(self.nodes_depot))
+        self.nodes_graph.append(self.nodes_depot[0])
         [self.nodes_graph.append(b[i]) for i in range(len(b))]
+        self.nodes_graph.append(self.nodes_depot[-1])
 
         # customers and docking hubs nodes shuffled as a new element
         z = [self.nodes_graph[i].index for i in range(len(self.nodes_graph))]
@@ -149,11 +150,12 @@ class Routes:
                 # else:
                 #     eattr['non_fly_zone'] = 0
 
+                # -------- set the customer demand according to the node attribution
                 if self.G.nodes[n]['demand'] == 1:
                     eattr['demand'] = 1
                 else:
                     eattr['demand'] = 0
-
+                # -------- set the euclidean distance between nodes as the weight of their connection
                 eattr['weight'] = 0
                 # get the related Object class according to index from the NetworkX
                 node_1 = self.find_node(n)
@@ -165,9 +167,11 @@ class Routes:
                     #distance_1 = round(np.linalg.norm(vec1-vec2))
                     distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))/13
                     eattr['weight'] = round(distance_1, 2)
-
+                # -------- set the wind direction according to the node attribution
                 eattr['wind_direction'] = node_1.wind_direction*node_2.wind_direction
 
+                # -------- set the costs of the drones to avoid risks area
+                eattr['detour_risks'] = np.random.uniform(0,5)
         return self.color_map
     # It's still short of graph with specific font size and format
 

@@ -23,9 +23,9 @@ max_bat_num_van: int = 2  # the maximum batteries can be saved on a minivan
 max_bat_num_dockhub: int = 5  # the maximum batteries can be saved at a docking hub
 
 # ---------------------- params for the map -----------------------------------------------
-dockhub_num: int = 5  # the number of docking hub nodes on the map to transport
+dockhub_num: int = 2  # the number of docking hub nodes on the map to transport
 depot_num: int = 1  # the number of depot on the map, only one is chosen
-customer_num: int = 30  # the number of customers in the map
+customer_num: int = 3  # the number of customers in the map
 customer_needs: dict = [1, 0]  # [the number of packages the customer needs, whether lives in a "non flying range"]
 
 # ---------------------- params for initiating a map graph --------------------------------

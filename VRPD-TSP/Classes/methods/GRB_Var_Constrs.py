@@ -70,7 +70,7 @@ class GRB_Var_Constrs:
         self.intersection_van_doc_num: int = 0  # the number of intersection nodes between van and docking hubs
         self.intersection_dro_vanDoc_num: int = 0  # the number of intersection nodes between drones and (van and docking hubs)
         self.non_fly_zone = nx.get_node_attributes(self.route.G, name='non_fly_zone')
-
+        self.detour_risks = nx.attr_matrix(self.route.G, edge_attr='detour_risks', rc_order=self.nodes_oder)
         # ------------ the number of drone and van that have intersections ---------------------------------------------
         self.battery_intersections: list = list()
 
