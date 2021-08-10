@@ -5,7 +5,7 @@ import random
 # ---------------------- params for the vehicles -------------------------------------------
 drones_num_on_van: int = 2  # the number of drones on the minivan
 van_num: int = 1  # the number of minivan used in a single TSP-D problem
-flying_range_drone: float = 100
+flying_range_drone: float = 60
 max_range_van: float = 500
 rate_load_range_drone: float = random.uniform(0, 0.1)  # how many packages should be loaded according to the left energy
 rate_load_range_van: float = random.uniform(0.3, 0.5)
@@ -23,9 +23,9 @@ max_bat_num_van: int = 2  # the maximum batteries can be saved on a minivan
 max_bat_num_dockhub: int = 5  # the maximum batteries can be saved at a docking hub
 
 # ---------------------- params for the map -----------------------------------------------
-dockhub_num: int = 2  # the number of docking hub nodes on the map to transport
-depot_num: int = 1  # the number of depot on the map, only one is chosen
-customer_num: int = 3  # the number of customers in the map
+dockhub_num: int = 10# the number of docking hub nodes on the map to transport
+depot_num: int = 2  # the number of depot on the map, only one is chosen
+customer_num: int = 100  # the number of customers in the map
 customer_needs: dict = [1, 0]  # [the number of packages the customer needs, whether lives in a "non flying range"]
 
 # ---------------------- params for initiating a map graph --------------------------------

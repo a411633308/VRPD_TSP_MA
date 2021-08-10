@@ -36,7 +36,7 @@ class GRB_Var_Constrs:
         self.nodes_oder = [self.route.nodes_graph[i].index for i in range(len(self.route.nodes_graph))]
 
 
-        # ------------initiate route and graph automatically------------------------------------------------------------
+    # ------------initiate route and graph automatically------------------------------------------------------------
 
         # ------------generate weights of drones and vans randomly------------------------------------------------------
         # self.weights: list = list()

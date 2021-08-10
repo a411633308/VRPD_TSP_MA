@@ -11,6 +11,8 @@ import random
 from random import choice
 from Classes.PARAMs import seed_num, max_bat_num_dockhub, max_pack_num_dockhub, \
     flying_range_drone, customer_needs, dockhub_num, depot_num, customer_num, color_list
+import datetime
+import time
 # import matplotlib.pyplot as plt
 
 class Routes:
@@ -41,7 +43,11 @@ class Routes:
         self.set_non_flying()
         self.set_color_weights_type(color_list)
 
-        self.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph.png')
+        # save the initiated graph with time tickle
+        dateArray = datetime.datetime.utcfromtimestamp(time.time())
+        otherStyleTime = dateArray.strftime("%m%d")
+        self.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph_dep'+str(depot_num)+
+                      '_doc'+str(dockhub_num)+'_cus'+str(customer_num)+'_'+str(otherStyleTime)+'.png')
 
     def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
         """
@@ -68,12 +74,14 @@ class Routes:
         # random shuffles the order of elements in the list
         # the result from shuffle() will not be saved
         b = np.random.permutation(a)
+
         self.G = nx.Graph()
 
         self.nodes_graph = list()
         self.nodes_graph.append(self.nodes_depot[0])
         [self.nodes_graph.append(b[i]) for i in range(len(b))]
         self.nodes_graph.append(self.nodes_depot[-1])
+        # print("nodes in the network ",len(self.nodes_graph),'\n', self.nodes_graph)
 
         # customers and docking hubs nodes shuffled as a new element
         z = [self.nodes_graph[i].index for i in range(len(self.nodes_graph))]
@@ -89,7 +97,7 @@ class Routes:
                                         self.nodes_graph[i].lat]})
          for i in range(len(z))]
 
-        for i in range(len(z)*3):
+        for i in range(len(z)*int(len(z)/3)):
             a = random.choice(z)
             b = random.choice(z)
             if a != b:
