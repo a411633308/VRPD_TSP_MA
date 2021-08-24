@@ -95,13 +95,14 @@ class GRB_Var_Constrs:
         plt.rcParams['font.size'] = 55
         plt.title('Map Graph with Weights as Edge Labels')
 
-        node_labels = nx.get_node_attributes(self.route.G, 'type')
+        # node_labels = nx.get_node_attributes(self.route.G, 'type')
         edge_labels = nx.get_edge_attributes(self.route.G, 'weight')
 
         pos = nx.spring_layout(self.route.G, seed=seed_num)
         nx.draw_networkx_edge_labels(self.route.G, pos, edge_labels=edge_labels, font_size=35)
-        nx.draw_networkx_labels(self.route.G, pos, labels=node_labels, font_size=35)
-        nx.draw(self.graph, node_color=self.route.color_map, pos=pos, with_labels=False, node_size=1500, font_size=35)
+        nx.draw_networkx_labels(self.route.G, pos, font_size=35) # labels=node_labels
+
+        nx.draw(self.graph, node_color=self.route.color_map, pos=pos, with_labels=True, node_size=1500, font_size=35)
 
         plt.savefig(graph_url)
         plt.close()
@@ -255,5 +256,3 @@ class GRB_Var_Constrs:
         self.intersection_van_doc_num: int = sum(c)
         return self.intersection_van_doc_num, self.intersection_dro_vanDoc_num
 
-
-bd = GRB_Var_Constrs()

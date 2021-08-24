@@ -46,7 +46,7 @@ class Routes:
         # save the initiated graph with time tickle
         dateArray = datetime.datetime.utcfromtimestamp(time.time())
         otherStyleTime = dateArray.strftime("%m%d")
-        self.plot_map(r'G:\Unterricht\05-2021\Ipad_Sharing\MA\Routing\8th_Random_Graphs\map_graph_dep'+str(depot_num)+
+        self.plot_map(r'G:\Unterricht\05-2021\MA\Projects\VRPD-TSP\Results\logs\map_graph_dep'+str(depot_num)+
                       '_doc'+str(dockhub_num)+'_cus'+str(customer_num)+'_'+str(otherStyleTime)+'.png')
 
     def init_graph_nodes(self, dckh_num: int = dockhub_num, dep_num: int = depot_num, cus_num: int = customer_num):
@@ -130,6 +130,7 @@ class Routes:
 
     def set_color_weights_type(self, colors):
         for n, nbrs in self.G.adj.items():
+            # add nodes attributes
             if n[:3] == 'cus':
                 self.G.nodes[n]['type'] = 'customer'
                 self.color_map.append(colors[0])
@@ -152,12 +153,9 @@ class Routes:
                 self.G.nodes[n]['max_ba'] = max_bat_num_dockhub
                 self.G.nodes[n]['max_pa'] = max_pack_num_dockhub
 
+            # add edges attributes
+            node_1 = self.find_node(n)
             for nbr, eattr in nbrs.items():
-                # if self.G.nodes[n]['non_fly_zone'] == 1:
-                #     eattr['non_fly_zone'] = 1
-                # else:
-                #     eattr['non_fly_zone'] = 0
-
                 # -------- set the customer demand according to the node attribution
                 if self.G.nodes[n]['demand'] == 1:
                     eattr['demand'] = 1
@@ -166,10 +164,8 @@ class Routes:
                 # -------- set the euclidean distance between nodes as the weight of their connection
                 eattr['weight'] = 0
                 # get the related Object class according to index from the NetworkX
-                node_1 = self.find_node(n)
                 node_2 = self.find_node(nbr)
                 if type(node_1)!=type(ValueError):
-                    import numpy as np
                     vec1 = np.array([node_1.lat, node_1.long])
                     vec2 = np.array([node_2.lat, node_2.long])
                     #distance_1 = round(np.linalg.norm(vec1-vec2))
@@ -180,6 +176,17 @@ class Routes:
 
                 # -------- set the costs of the drones to avoid risks area
                 eattr['detour_risks'] = np.random.uniform(0,5)
+
+            graph_edges = self.G.edges()
+            for i, j in graph_edges:
+                node_1 = self.find_node(i)
+                node_2 = self.find_node(j)
+                if type(node_1)!=type(ValueError):
+                    vec1 = np.array([node_1.lat, node_1.long])
+                    vec2 = np.array([node_2.lat, node_2.long])
+                    #distance_1 = round(np.linalg.norm(vec1-vec2))
+                    distance_1 = np.sqrt(np.sum(np.square(vec1-vec2)))/13
+                    self.G[i][j]['weight'] = round(distance_1, 2)
         return self.color_map
     # It's still short of graph with specific font size and format
 
