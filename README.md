@@ -1,5 +1,7 @@
 # VRPD_TSP_MA:
 
+## Mathematical Formulation as in file "MathFormulation_20-30.pdf"
+
 ## Meta-Heuristic Algorithm Implementation
 nodes, vehicles, and resources classes are in location of VRPD-TSP/Classes
 related constraints formulation and SA algorithms are stored in VRPD-TSP/Classes/methods
